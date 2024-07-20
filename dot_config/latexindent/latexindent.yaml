@@ -1,0 +1,12 @@
+onlyOneBackUp: 1
+
+# default value of indentation
+defaultIndent: " "
+
+# if you have indent rules for particular code blocks
+# then you can populate them in indentRules; for example, you might just want
+# to use a space " " or maybe a double tab "\t\t"
+indentRules:
+   chapter: " "
+   section: " "
+   item: " "

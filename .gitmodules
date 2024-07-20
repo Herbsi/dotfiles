@@ -1,0 +1,3 @@
+[submodule "dot_config/emacs"]
+	path = dot_config/emacs
+	url = ssh://git@github.com/Herbsi/.emacs.d

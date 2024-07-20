@@ -1,0 +1,54 @@
+alias clr="clear"
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
+alias mkdir="mkdir -pv"
+alias wget='wget -c'
+
+if command -v eza >/dev/null;
+  alias eza="eza --group-directories-first --git";
+  alias l="eza -1";
+  alias ll="eza -lg";
+  alias la="LC_COLLATE=C eza -la";
+end
+
+alias e="emacsclient --create-frame"
+
+# Direnv
+direnv hook fish | source
+
+# Pyenv
+pyenv init - | source
+
+# Starship
+starship init fish | source
+
+# Zoxide
+zoxide init fish | source
+
+# fzf configuration
+set fzf_fd_opts --hidden \
+  --exclude=.DS_Store \
+  --exclude=.git \
+  --exclude=.Trash \
+  --exclude='*cache*' \
+  --exclude=py_cache \
+  --exclude='.cpan*' \
+  --exclude=Music/Music \
+  --exclude=Library \
+  --exclude=.local/share \
+  --exclude=pip \
+  --exclude=site-packages
+
+set fzf_preview_dir_cmd eza --all --color=always
+fzf_configure_bindings --directory=\ct
+
+{{- if eq .chezmoi.os "darwin"}} 
+## This will only be included in ~/.config/fish/config.fish on Helium
+source "/opt/local/share/fzf/shell/key-bindings.fish"
+
+source $XDG_CONFIG_HOME/fish/iterm2_shell_integration.fish
+
+set -gx SSH_AUTH_SOCK ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+{{- end }}
+

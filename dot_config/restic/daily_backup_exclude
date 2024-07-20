@@ -1,0 +1,9 @@
+# LaTeX
+.latexindent
+
+# Python
+py_cache
+
+# Rust
+debug
+target

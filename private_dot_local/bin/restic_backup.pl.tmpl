@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Env;
+use Time::Piece;
+
+print "-\n";
+print "-\n";
+print "Running scheduled backup (" . localtime->ymd() . ")...\n";
+print "---------------------------\n";
+
+`restic -r {{ .restic.bucket }} backup \\
+        --files-from=$ENV{XDG_CONFIG_HOME}/restic/daily_backup_include \\
+        --exclude=$ENV{XDG_CONFIG_HOME}/restic/daily_backup_exclude \\
+        -vv`;
+
+print "";
+print "Finished scheduled backup " . localtime->ymd() . "\n";
+print "---------------------------\n";

@@ -1,0 +1,29 @@
+[user]
+	name = {{ .git.name | quote }}
+	email = {{ .git.email | quote }}
+	signingkey = {{ .git.signingkey }}
+[core]
+	pager = delta
+	whitespace = trailing-space
+[merge]
+    conflictStyle = diff3
+[interactive]
+	diffFilter = delta --color-only
+[color]
+	ui = auto
+[github]
+	user = {{ .git.github.user | quote }}
+[push]
+	default = current
+[gpg]
+	program = {{ .git.gpg.program | quote }}
+	format = ssh
+[gpg "ssh"]
+	program = {{ .git.gpg.ssh.program | quote }}
+[commit]
+	gpgsign = true
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f

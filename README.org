@@ -1,0 +1,10 @@
+* ~$DOTFILES~
+
+A tidy ~$HOME~ is a tidy mind.
+
+These are my dotfiles, managed using [[https://chezmoi.io][chezmoi]].
+
+Install by running
+#+begin_src  sh
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply Herbsi
+#+end_src

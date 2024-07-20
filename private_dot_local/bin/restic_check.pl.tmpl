@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Env;
+use Time::Piece;
+
+print "-\n";
+print "-\n";
+print "Checking backup (" . localtime->ymd() . ")...\n";
+print "---------------------------\n";
+
+`restic -r {{ .restic.bucket }} check \\
+        --cache-dir "$ENV{RESTIC_CACHE_DIR}" \\
+        --cleanup-cache`;
+
+print "";
+print "Finished checking backup " . localtime->ymd() . "\n";
+print "---------------------------\n";
+`df -h`;
+print "";

@@ -1,0 +1,11 @@
+#####################################################################
+# The default file lives in /usr/local/texlive/2024basic/texmf-dist/chktex/chktexrc
+
+TabSize = 4
+
+CmdLine
+{
+    -n3 # “You should enclose the previous parenthesis with `{}'”
+    -n8 # Do not warn about dashes—I know how to use them.
+}
+

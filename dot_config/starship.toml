@@ -1,0 +1,50 @@
+[aws]
+symbol = " "
+
+[battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
+disabled = true
+
+[character]
+success_symbol = "[λ](bold green)"
+error_symbol = "[λ](bold red)"
+
+[conda]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+disabled = true
+symbol = " "
+
+[php]
+symbol = " "
+
+[python]
+symbol = " "
+python_binary = "python3"
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
