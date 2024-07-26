@@ -39,10 +39,7 @@ hyper:bind(
     "c",
     function()
       hyper.triggered = true
-      local win = hs.window.focusedWindow()
-      hs.application.launchOrFocus("/Applications/MacPorts/EmacsMac.app")
       local o, s, t, r = hs.execute("org-capture", true)
-      win:focus()
     end
 )
 
