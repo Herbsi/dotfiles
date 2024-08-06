@@ -1,12 +1,39 @@
+# Default file: /usr/local/texlive/2024basic/texmf-dist/scripts/latexindent/defaultSettings.yaml
+
 onlyOneBackUp: 1
 
-# default value of indentation
 defaultIndent: " "
 
-# if you have indent rules for particular code blocks
-# then you can populate them in indentRules; for example, you might just want
-# to use a space " " or maybe a double tab "\t\t"
+lookForAlignDelims:
+  align:
+    alignDoubleBackSlash: 0
+    alignFinalDoubleBackSlash: 0
+  align*:
+    alignDoubleBackSlash: 0
+    alignFinalDoubleBackSlash: 0
+  aligned:
+    alignDoubleBackSlash: 0
+    alignFinalDoubleBackSlash: 0
+  tblr:
+    alignDoubleBackSlash: 0
+    alignFinalDoubleBackSlash: 0
+
 indentRules:
    chapter: " "
    section: " "
    item: " "
+
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    sentencesEndWith:
+      exclamationMark: 0
+      questionMark: 0
+      other: [?!](?!\s*[-–—;]?)
+    sentencesDoNOTcontain:
+      other: \\begin
+  environments:
+    BeginStartsOnOwnLine: 1
+    BodyStartsOnOwnLine: 1
+    EndStartsOnOwnLine: 1
+    EndFinishesWithLineBreak: 1
