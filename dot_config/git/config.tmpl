@@ -2,6 +2,8 @@
 	name = {{ .git.name | quote }}
 	email = {{ .git.email | quote }}
 	signingkey = {{ .git.signingkey }}
+[init]
+    defaultBranch = master
 [core]
 	pager = delta
 	whitespace = trailing-space
