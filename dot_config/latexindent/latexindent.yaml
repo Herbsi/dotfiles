@@ -1,4 +1,4 @@
-# Default file: /usr/local/texlive/2024basic/texmf-dist/scripts/latexindent/defaultSettings.yaml
+# Default file: /usr/local/texlive/2024/texmf-dist/scripts/latexindent/defaultSettings.yaml
 
 onlyOneBackUp: 1
 
@@ -19,9 +19,9 @@ lookForAlignDelims:
     alignFinalDoubleBackSlash: 0
 
 indentRules:
-   chapter: " "
-   section: " "
-   item: " "
+  chapter: " "
+  section: " "
+  item: " "
 
 modifyLineBreaks:
   oneSentencePerLine:
@@ -29,7 +29,7 @@ modifyLineBreaks:
     sentencesEndWith:
       exclamationMark: 0
       questionMark: 0
-      other: [?!](?!\s*[-–—;]?)
+      other: [?!;](?!\s*[-–—;\[\]])
     sentencesDoNOTcontain:
       other: \\begin
   environments:
