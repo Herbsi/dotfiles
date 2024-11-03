@@ -4,28 +4,15 @@ LICENSE
 
 {{- if ne .chezmoi.os "darwin" }}
 # Only on macOS
-.config/chktex/**
 .config/com.googlecode.iterm2.plist
-.config/direnv/**
-.config/editorconfig/**
-.config/emacs/**
-.config/enchant/**
 .config/fish/iterm2_shell_integration.fish
-.config/hammerspoon/**
-.config/latexindent/**
-.config/latexmk/**
-.config/tmux/**
-.local/bin/org-capture
-.indentconfig.yaml
-.sbclrc
-install-latex-packages.sh
-install-pyenv.sh
 {{- end }}
 
-{{- if ne .chezmoi.hostname "kuro" }}
+{{- if ne .chezmoi.hostname "Kuro" }}
 # Only on kuro
+.xinitrc
 .config/ludusavi/**
 .config/restic/**
-.local/bin/restic*
 .config/systemd/**
+.local/bin/restic*
 {{- end}}
