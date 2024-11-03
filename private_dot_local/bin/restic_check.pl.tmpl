@@ -11,7 +11,7 @@ print "Checking backup (" . localtime->ymd() . ")...\n";
 print "---------------------------\n";
 
 `restic -r {{ .restic.bucket }} check \\
-        --cache-dir "$ENV{RESTIC_CACHE_DIR}" \\
+        --cache-dir "$ENV{XDG_CACHE_DIR}/restic" \\
         --cleanup-cache`;
 
 print "";

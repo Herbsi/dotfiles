@@ -10,7 +10,8 @@ install-latex-packages.sh
 {{- end }}
 
 {{- if ne .chezmoi.hostname "Kuro" }}
-# Only on kuro
+# Only on Kuro
+setup-restic-cronjob.sh
 .xinitrc
 .config/ludusavi/**
 .config/restic/**

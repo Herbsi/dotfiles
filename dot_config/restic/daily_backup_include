@@ -2,7 +2,9 @@
 /home/herwig/.config/fish/**
 /home/herwig/.dotfiles/**
 /home/herwig/.local/bin/**
-/home/herwig/.local/share/fonts/**
+/home/herwig/Archive/**
 /home/herwig/Desktop/**
-/home/herwig/Saves/**
+/home/herwig/Git/**
+/home/herwig/Org/**
+/home/herwig/Resources/**
 /usr/share/fonts/opentype/**
