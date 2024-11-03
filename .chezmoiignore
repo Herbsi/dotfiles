@@ -4,6 +4,7 @@ LICENSE
 
 {{- if ne .chezmoi.os "darwin" }}
 # Only on macOS
+install-latex-packages.sh
 .config/com.googlecode.iterm2.plist
 .config/fish/iterm2_shell_integration.fish
 {{- end }}

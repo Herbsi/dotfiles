@@ -1,0 +1,13 @@
+#!/bin/sh
+
+{{- if eq .chezmoi.hostname "Kuro" }}
+
+sudo pacman -S pyenv
+
+{{- end }}
+
+{{- if eq .chezmoi.hostname "Helium" }}
+
+curl https://pyenv.run | bash
+
+{{- end }}

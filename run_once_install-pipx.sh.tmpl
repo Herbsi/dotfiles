@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 {{- if eq .chezmoi.hostname "Kuro"}}
+
 sudo pacman -S python-pipx
 pipx ensurepath
+
 {{- end }}
