@@ -1,15 +1,20 @@
 ---
 runtime:
   threads: ~
+release:
+  check: true
 manifest:
-  url: "https://raw.githubusercontent.com/mtkennerly/ludusavi-manifest/master/data/manifest.yaml"
+  enable: true
 language: en-US
 theme: dark
 roots:
-  - path: /home/herwig/.steam/debian-installation
-    store: steam
-  - path: /home/herwig/.config/lutris
-    store: lutris
+  - store: steam
+    path: /home/herwig/.steam/debian-installation
+  - store: lutris
+    path: /home/herwig/.config/lutris
+    database: ~
+  - store: steam
+    path: /home/herwig/.local/share/Steam
 redirects: []
 backup:
   path: /home/herwig/Resources/Gamesaves
