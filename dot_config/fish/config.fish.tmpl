@@ -34,8 +34,11 @@ if command -v starship > /dev/null;
 end
 
 
-# Pyenv
-pyenv init - | source
+## uv
+if command -v uv > /dev/null;
+  uv generate-shell-completion fish | source
+  uvx --generate-shell-completion fish | source
+end
 
 
 ## Zoxide
