@@ -1,0 +1,90 @@
+#!/usr/bin/env Rscript
+
+renv::load(Sys.getenv("XDG_BIN_HOME"))
+
+### Setup
+## TODO Add proper close date.
+close_date <- lubridate::today()
+bean_query <- "bean-query"
+
+tmp_dir <- Sys.getenv("TMPDIR", unset = file.path("/tmp"))
+
+
+### Argument parsing
+parser <- optparse::OptionParser(usage = "%prog FILENAME")
+arguments <- optparse::parse_args(parser, positional_arguments = 1)
+opt <- arguments$options
+file <- arguments$args
+
+if (!file.exists(file)) {
+  stop(sprintf("Error: Invalid value for 'FILENAME': '%s': No such file or directory", file))
+}
+
+
+### Calculate savings rate
+## Store query and output_file in a list
+expenses <- list(query = glue::glue("
+SELECT YEAR(date) as year, MONTH(date) as month, SUM(CONVERT(position, \\\"CHF\\\"))
+FROM CLOSE ON {close_date}
+WHERE account ~ \\\"^Expenses\\\";
+"),
+output_file = file.path(tmp_dir, "expenses.csv")
+)
+
+income <- list(query = glue::glue("
+SELECT YEAR(date) as year, MONTH(date) as month, SUM(CONVERT(position, \\\"CHF\\\"))
+FROM CLOSE ON {close_date}
+WHERE account ~ \\\"^Income\\\";
+"),
+output_file = file.path(tmp_dir, "income.csv"))
+
+
+## Write both expenses and income to a csv
+for (list in list(expenses, income)) {
+  system(glue::glue("{bean_query} --format csv --output {list$output_file} {file} \"{list$query}\""))
+}
+
+
+## Read back the CSV, removing CHF suffix and parse date and position
+## Also make both positions positive
+read_csv <- function(file, col_names = c("year", "month", "position"), ...) {
+  readr::read_csv(file, col_names = col_names, skip = 1, show_col_types = FALSE, ...) |>
+    dplyr::mutate(
+      date = lubridate::ym(paste0(year, month)),
+      position = abs(as.numeric(stringr::str_sub(position, end = -5))),
+      .keep = "unused"
+    ) |>
+    dplyr::select(date, position)
+}
+
+
+savings_rate <- function(expenses, income) {
+  ifelse(is.infinite((income - expenses) / income), 0, (income - expenses) / income)
+}
+
+
+## Combine expenses and income in one tibble and add savings rate and rolling average of past 12 months.
+the_tibble <- dplyr::full_join(
+  read_csv(expenses$output_file) |> dplyr::rename(expenses = position),
+  read_csv(income$output_file) |> dplyr::rename(income = position),
+  by = "date") |>
+  dplyr::mutate(
+    expenses = ifelse(is.na(expenses), 0, expenses),
+    income = ifelse(is.na(income), 0, income),
+    savings_rate = savings_rate(expenses, income),
+    ## We are guaranteed no NAs in the middle
+    rollmean = zoo::rollmean(savings_rate, 12, fill = c(savings_rate[1], NA, savings_rate[length(savings_rate)]))
+  )
+
+
+### Generate plot
+## TODO Add output file
+ggplot2::ggplot(the_tibble) +
+  ggplot2::geom_line(ggplot2::aes(x = date, y = 100 * savings_rate), colour = "blue") +
+  ggplot2::geom_line(ggplot2::aes(x = date, y = 100 * rollmean)) +
+  ggplot2::scale_x_date(breaks = scales::breaks_pretty(10)) +
+  ggplot2::coord_cartesian(ylim = c(-100, 100)) +
+  ggplot2::labs(
+    x = "Date",
+    y = "Savings Rate and 12-month average Savings Rate in %"
+  )

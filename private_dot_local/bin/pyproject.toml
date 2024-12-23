@@ -1,0 +1,12 @@
+[project]
+name = "bin"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.8",
+    "numpy>=2.2.1",
+    "polars>=1.17.1",
+    "pyright>=1.1.391",
+    "ruff>=0.8.4",
+]
