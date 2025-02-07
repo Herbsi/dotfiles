@@ -5,6 +5,9 @@ LICENSE
 {{- if ne .chezmoi.os "darwin" }}
 # Only on macOS
 install-latex-packages.sh
+.config/emacs/**
+.local/bin/bean-*
+.local/bin/org-capture
 {{- end }}
 
 {{- if ne .chezmoi.hostname "Kuro" }}
