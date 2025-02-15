@@ -29,7 +29,7 @@
 	ui = auto
 
 [github]
-	user = "Herbsi"
+	user = {{ .git.github.user | quote }}
 
 [push]
 	default = current
