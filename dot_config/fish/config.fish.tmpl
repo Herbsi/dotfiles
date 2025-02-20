@@ -1,9 +1,14 @@
 ## Setup $PATH
 # The value gets *pretended* to $fish_user_paths.
+{{- if eq .chezmoi.os "darwin" }}
 fish_add_path --global /opt/local/bin
 fish_add_path --global /usr/local/bin
 fish_add_path --global /Applications/MacPorts/EmacsMac.app/Contents/MacOS/bin
 fish_add_path --global /Users/herwig/.local/bin
+{{- end }}
+{{- if eq .chezmoi.hostname "CalcEngine" }}
+fish_add_path --global /snap/bin
+{{- end }}
 
 ## aliases
 alias clr="clear"
