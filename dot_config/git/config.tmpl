@@ -1,8 +1,8 @@
 {{- if eq .chezmoi.hostname "CalcEngine" }}
 [core]
 	sshCommand = ssh.exe
-{{- end}}
 
+{{- end}}
 [user]
 	name = {{ .git.name | quote }}
 	email = {{ .git.email | quote }}
@@ -14,12 +14,27 @@
 [core]
 	pager = delta
 	whitespace = trailing-space
+    
+[column]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
 
 [merge]
     conflictStyle = zdiff3
 
 [interactive]
 	diffFilter = delta --color-only
+    
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mmnenicPrefix = true
+    renames = true
 
 [delta]
     navigate = true  
@@ -32,7 +47,22 @@
 	user = {{ .git.github.user | quote }}
 
 [push]
-	default = current
+    autoSetupRemote = true
+    followTags = true
+    
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[rebase]
+    autoSquash = true
+    autoStash = true
+    upateRefs = true
 
 [gpg]
 	program = {{ .git.gpg.program | quote }}
