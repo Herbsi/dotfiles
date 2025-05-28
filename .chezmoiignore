@@ -1,6 +1,6 @@
 README.org
 LICENSE
-.config/emacs/elpaca.lock
+.config/emacs/**
 
 {{- if ne .chezmoi.os "darwin" }}
 # Only on macOS
