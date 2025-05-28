@@ -1,9 +1,10 @@
 ## Setup $PATH
 # The value gets *pretended* to $fish_user_paths.
 {{- if eq .chezmoi.os "darwin" }}
-fish_add_path --global /opt/local/bin
 fish_add_path --global /usr/local/bin
-fish_add_path --global /Applications/MacPorts/EmacsMac.app/Contents/MacOS/bin
+fish_add_path --global /opt/local/bin
+fish_add_path --global /Applications/MacPorts/Emacs.app/Contents/MacOS
+fish_add_path --global /Users/herwig/.config/emacs/bin
 fish_add_path --global /Users/herwig/.local/bin
 {{- end }}
 {{- if eq .chezmoi.hostname "CalcEngine" }}
@@ -20,51 +21,51 @@ alias rm="rm -i"
 alias wget='wget -c'
 
 if command -v eza > /dev/null;
-  alias eza="eza --group-directories-first --git";
-  alias l="eza -1";
-  alias ll="eza -lg";
-  alias la="LC_COLLATE=C eza -la";
+    alias eza="eza --group-directories-first --git";
+    alias l="eza -1";
+    alias ll="eza -lg";
+    alias la="LC_COLLATE=C eza -la";
 end
 
 
 ## Direnv
 if command -v direnv > /dev/null;
-  direnv hook fish | source
+    direnv hook fish | source
 end
 
 
 ## Starship
 if command -v starship > /dev/null;
-  starship init fish | source
+    starship init fish | source
 end
 
 
 ## uv
 if command -v uv > /dev/null;
-  uv generate-shell-completion fish | source
-  uvx --generate-shell-completion fish | source
+    uv generate-shell-completion fish | source
+    uvx --generate-shell-completion fish | source
 end
 
 
 ## Zoxide
 if command -v zoxide > /dev/null;
-  zoxide init fish | source
+    zoxide init fish | source
 end
 
 
 ## fzf configuration
 set fzf_fd_opts --hidden \
-  --exclude=.DS_Store \
-  --exclude=.git \
-  --exclude=.Trash \
-  --exclude='*cache*' \
-  --exclude=py_cache \
-  --exclude='.cpan*' \
-  --exclude=Music/Music \
-  --exclude=Library \
-  --exclude=.local/share \
-  --exclude=pip \
-  --exclude=site-packages
+    --exclude=.DS_Store \
+    --exclude=.git \
+    --exclude=.Trash \
+    --exclude='*cache*' \
+    --exclude=py_cache \
+    --exclude='.cpan*' \
+    --exclude=Music/Music \
+    --exclude=Library \
+    --exclude=.local/share \
+    --exclude=pip \
+    --exclude=site-packages
 
 set fzf_preview_dir_cmd eza --all --color=always
 fzf_configure_bindings --directory=\ct
@@ -73,6 +74,5 @@ fzf_configure_bindings --directory=\ct
 ## macOS settings
 source "/opt/local/share/fzf/shell/key-bindings.fish"
 source $XDG_CONFIG_HOME/fish/iterm2_shell_integration.fish
-
-set -gx SSH_AUTH_SOCK ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+set -gx SSH_AUTH_SOCK $HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 {{- end }}
