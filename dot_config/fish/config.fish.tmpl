@@ -20,6 +20,10 @@ alias mv="mv -i"
 alias rm="rm -i"
 alias wget='wget -c'
 
+if command -v R > /dev/null;
+    alias R='R --silent --no-save'
+end
+
 if command -v eza > /dev/null;
     alias eza="eza --group-directories-first --git";
     alias l="eza -1";
