@@ -5,6 +5,7 @@ import datetime
 import polars as pl
 import os
 import subprocess
+import rich
 
 from pathlib import Path
 
@@ -39,8 +40,7 @@ def main(filename):
             [
                 pl.col("date")
                 .str.strptime(pl.Date, "%Y-%m-%d", strict=False)
-                .dt.year()
-                .alias("year"),
+                .alias("date"),
                 pl.col("account").str.extract(r"^([^:]+)").alias("account"),
                 pl.col("position")
                 .str.strip_chars_start(" ")
@@ -51,15 +51,17 @@ def main(filename):
         )
         .filter(
             (pl.col("account").is_in(["Income", "Expenses"]))
-            & (pl.col("year") >= datetime.date.today().year)
+            & (pl.col("date") >= datetime.date.today() - datetime.timedelta(days=365))
         )
-        .group_by("year", "account")
+        .with_columns(pl.lit("summary").alias("summary"))
+        .group_by("summary", "account")
         .agg(pl.col("position").sum().alias("position"))
         .pivot(
-            index="year",
+            index="summary",
             on="account",
             values="position",
         )
+        .drop("summary")
         .with_columns(
             [
                 (-pl.col("Income") - pl.col("Expenses")).alias("Saved"),
@@ -69,11 +71,12 @@ def main(filename):
             ]
         )
     )
+
     width = 8
-    print(f"Income:       {abs(df[0, 'Income']):>{width}.2f} CHF")
-    print(f"Expenses:     {abs(df[0, 'Expenses']):>{width}.2f} CHF")
-    print(f"Saved:        {df[0, 'Saved']:>{width}.2f} CHF")
-    print(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
+    rich.print(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
+    rich.print(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
+    rich.print(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
+    rich.print(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
 
 
 if __name__ == "__main__":
