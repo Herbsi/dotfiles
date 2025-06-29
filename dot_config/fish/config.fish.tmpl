@@ -1,18 +1,24 @@
 # -*- mode: fish -*-
-## Setup $PATH
-# The value gets *pretended* to $fish_user_paths.
+### Setup $PATH
+## The value gets *prepended* to $fish_user_paths.
 {{- if eq .chezmoi.os "darwin" }}
+## macOS
 fish_add_path --global /usr/local/bin
 fish_add_path --global /opt/local/bin
 fish_add_path --global /Applications/MacPorts/Emacs.app/Contents/MacOS
+fish_add_path --global /usr/local/texlive/2025/bin/universal-darwin
 fish_add_path --global /Users/herwig/.config/emacs/bin
 fish_add_path --global /Users/herwig/.local/bin
 {{- end }}
-{{- if eq .chezmoi.hostname "CalcEngine" }}
+{{- if eq .chezmoi.hostname "Kuro" }}
+fish_add_path --global /Users/herwig/.config/emacs/bin
+{{- end }}
+{{- if eq .chezmoi.hostname "Ferrum" }}
+## Windows
 fish_add_path --global /snap/bin
 {{- end }}
 
-## aliases
+### aliases
 alias clr="clear"
 alias cp="cp -i"
 alias e="emacsclient --create-frame"
@@ -33,32 +39,32 @@ if command -v eza > /dev/null;
 end
 
 
-## Direnv
+### Direnv
 if command -v direnv > /dev/null;
     direnv hook fish | source
 end
 
 
-## Starship
+### Starship
 if command -v starship > /dev/null;
     starship init fish | source
 end
 
 
-## uv
+### uv
 if command -v uv > /dev/null;
     uv generate-shell-completion fish | source
     uvx --generate-shell-completion fish | source
 end
 
 
-## Zoxide
+### Zoxide
 if command -v zoxide > /dev/null;
     zoxide init fish | source
 end
 
 
-## fzf configuration
+### fzf configuration
 set fzf_fd_opts --hidden \
     --exclude=.DS_Store \
     --exclude=.git \
@@ -75,6 +81,7 @@ set fzf_fd_opts --hidden \
 set fzf_preview_dir_cmd eza --all --color=always
 fzf_configure_bindings --directory=\ct
 
+### Shell integration
 {{- if eq .chezmoi.os "darwin" }} 
 ## macOS settings
 source "/opt/local/share/fzf/shell/key-bindings.fish"
