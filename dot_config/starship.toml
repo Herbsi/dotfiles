@@ -1,50 +1,18 @@
-[aws]
-symbol = " "
-
 [battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
-disabled = true
+full_symbol = "• "
+charging_symbol = "⇡ "
+discharging_symbol = "⇣ "
+unknown_symbol = "❓ "
+empty_symbol = "❗ "
 
-[character]
-success_symbol = "[λ](bold green)"
-error_symbol = "[λ](bold red)"
-
-[conda]
-symbol = " "
-
-[git_branch]
-symbol = " "
-
-[golang]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[java]
-symbol = " "
-
-[memory_usage]
-symbol = " "
+[erlang]
+symbol = "ⓔ "
 
 [nodejs]
-symbol = " "
+symbol = "[⬢](bold green) "
 
-[package]
-disabled = true
-symbol = " "
+[pulumi]
+symbol = "🧊 "
 
-[php]
-symbol = " "
-
-[python]
-symbol = " "
-python_binary = "python3"
-
-[ruby]
-symbol = " "
-
-[rust]
-symbol = " "
+[typst]
+symbol = "t "
