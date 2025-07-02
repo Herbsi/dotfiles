@@ -1,0 +1,72 @@
+[user]
+	name = {{ .git.name | quote }}
+	email = {{ .git.email | quote }}
+	signingkey = {{ .git.signingkey }}
+
+[init]
+    defaultBranch = master
+
+[core]
+	pager = delta
+	whitespace = trailing-space
+    
+[column]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[merge]
+    conflictStyle = zdiff3
+
+[interactive]
+	diffFilter = delta --color-only
+    
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mmnenicPrefix = true
+    renames = true
+
+[delta]
+    navigate = true  
+    dark = true     
+    
+[color]
+	ui = auto
+
+[github]
+	user = {{ .git.github.user | quote }}
+
+[push]
+    autoSetupRemote = true
+    followTags = true
+    
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[rebase]
+    autoSquash = true
+    autoStash = true
+    upateRefs = true
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
+
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
