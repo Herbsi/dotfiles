@@ -2,21 +2,36 @@ README.org
 LICENSE
 .config/emacs/**
 
-{{- if ne .chezmoi.os "darwin" }}
-# Only on macOS
+{{ if ne .chezmoi.os "darwin" }}
+## Only on macOS
 install-latex-packages.sh
 install-python-tools.sh
 .config/emacs/**
 .local/bin/bean-*
 .local/bin/org-capture
-{{- end }}
+{{ end }}
 
-{{- if ne .chezmoi.hostname "Kuro" }}
-# Only on Kuro
+{{ if ne .chezmoi.hostname "Kuro" }}
+## Only on Kuro
 setup-restic-cronjob.sh
 .xinitrc
 .config/ludusavi/**
 .config/restic/**
 .config/systemd/**
 .local/bin/restic*
-{{- end}}
+{{ end }}
+
+{{ if (or (ne .chezmoi.os "darwin") (ne .chezmoi.hostname "Kuro")) }}
+.config
+.local
+
+.indentconfig.yaml
+.sbclrc
+install-fisher.fish
+{{ end }}
+
+{{ if ne .chezmoi.hostname "Ferrum" }}
+## Only on Ferrum
+.gitconfig
+AppData
+{{ end}}
