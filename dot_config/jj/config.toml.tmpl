@@ -1,14 +1,1 @@
-"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
-
-[user]
-name = {{ .git.name | quote }}
-email = {{ .git.email | quote }}
-
-[signing]
-behavior = "own"
-backend = "ssh"
-key = {{ .git.signingkey | quote }}
-backends.ssh.program = {{ .git.gpg.ssh.program | quote }}
-
-[git]
-sign-on-push = true
+{{- template "jj/config.toml.tmpl" . -}}
