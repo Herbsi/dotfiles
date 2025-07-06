@@ -1,14 +1,14 @@
 [user]
-	name = {{ .git.name | quote }}
-	email = {{ .git.email | quote }}
-	signingkey = {{ .git.signingkey }}
+    name = {{ .git.name | quote }}
+    email = {{ .git.email | quote }}
+    signingkey = {{ .git.signingkey }}
 
 [init]
     defaultBranch = master
 
 [core]
-	pager = delta
-	whitespace = trailing-space
+    pager = delta
+    whitespace = trailing-space
     
 [column]
     ui = auto
@@ -23,7 +23,7 @@
     conflictStyle = zdiff3
 
 [interactive]
-	diffFilter = delta --color-only
+    diffFilter = delta --color-only
     
 [diff]
     algorithm = histogram
@@ -36,10 +36,10 @@
     dark = true     
     
 [color]
-	ui = auto
+    ui = auto
 
 [github]
-	user = {{ .git.github.user | quote }}
+    user = {{ .git.github.user | quote }}
 
 [push]
     autoSetupRemote = true
@@ -60,13 +60,13 @@
     upateRefs = true
 
 [gpg]
-	format = ssh
+    format = ssh
 
 [commit]
-	gpgsign = true
+    gpgsign = true
 
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
