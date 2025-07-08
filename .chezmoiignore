@@ -21,8 +21,9 @@ setup-restic-cronjob.sh
 .local/bin/restic*
 {{ end }}
 
-{{ if (or (ne .chezmoi.os "darwin") (ne .chezmoi.hostname "Kuro")) }}
+{{ if (and (ne .chezmoi.os "darwin") (ne .chezmoi.hostname "Kuro")) }}
 .config
+!.config/starship.toml
 .local
 
 .indentconfig.yaml
