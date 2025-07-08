@@ -31,7 +31,7 @@ jj log -r@ -n1 --ignore-working-copy --no-graph --color always  -T '
 '
 '''
 when = "jj root"
-symbol = "jj"
+symbol = "jj "
 
 [custom.jjstate]
 when = "jj root"
