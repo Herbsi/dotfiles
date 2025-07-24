@@ -35,4 +35,5 @@ install-fisher.fish
 ## Only on Ferrum
 .gitconfig
 AppData
-{{ end}}
+Documents
+{{ end }}
