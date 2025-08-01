@@ -5,10 +5,13 @@ name = {{ .git.name | quote }}
 email = {{ .git.email | quote }}
 
 [signing]
-behavior = "own"
+behavior = "drop"
 backend = "ssh"
 key = {{ .git.signingkey | quote }}
 
 [git]
 sign-on-push = true
 
+[ui]
+default-command = "log"
+graph.style = "ascii"
