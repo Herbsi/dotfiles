@@ -12,6 +12,9 @@ key = {{ .git.signingkey | quote }}
 [git]
 sign-on-push = true
 
+[working-copy]
+eol-conversion = "input-output"
+
 [ui]
 default-command = "log"
 graph.style = "ascii"
