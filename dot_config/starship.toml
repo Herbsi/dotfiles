@@ -18,20 +18,10 @@ symbol = "🧊 "
 symbol = "t "
 
 [custom.jj]
-command = '''
-jj log -r@ -n1 --ignore-working-copy --no-graph --color always  -T '
-  separate(" ",
-    bookmarks.map(|x| truncate_end(10, x.name(), "…")).join(" "),
-    tags.map(|x| truncate_end(10, x.name(), "…")).join(" "),
-    surround("\"", "\"", truncate_end(24, description.first_line(), "…")),
-    if(conflict, "conflict"),
-    if(divergent, "divergent"),
-    if(hidden, "hidden"),
-  )
-'
-'''
-when = "jj root"
-symbol = "jj "
+ignore_timeout = true
+description = "The current jj status"
+when = true
+command = 'jj log -r @ --no-graph --color always -T prompt && jj op log -T "id.short(4)" --limit 1 --no-graph --color always --ignore-working-copy'
 
 [custom.jjstate]
 when = "jj root"
