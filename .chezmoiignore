@@ -1,32 +1,33 @@
-README.org
-LICENSE
 .config/emacs/**
+LICENSE
+README.org
+ports.txt
 
 {{ if ne .chezmoi.os "darwin" }}
 ## Only on macOS
-install-latex-packages.sh
-install-python-tools.sh
 .config/emacs/**
 .local/bin/bean-*
 .local/bin/org-capture
+install-latex-packages.sh
+install-python-tools.sh
+port-requested.sh
 {{ end }}
 
 {{ if ne .chezmoi.hostname "Kuro" }}
 ## Only on Kuro
-setup-restic-cronjob.sh
-.xinitrc
 .config/ludusavi/**
 .config/restic/**
 .config/systemd/**
 .local/bin/restic*
+.xinitrc
+setup-restic-cronjob.sh
 {{ end }}
 
 {{ if (and (ne .chezmoi.os "darwin") (ne .chezmoi.hostname "Kuro")) }}
-.config
 !.config/starship.toml
-.local
-
+.config
 .indentconfig.yaml
+.local
 .sbclrc
 install-fisher.fish
 {{ end }}
