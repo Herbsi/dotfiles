@@ -15,17 +15,19 @@ port-requested.sh
 
 {{ if ne .chezmoi.hostname "Kuro" }}
 ## Only on Kuro
-.config/ludusavi/**
-.config/restic/**
-.config/systemd/**
+.config/ludusavi/*
+.config/restic/*
+.config/systemd/*
 .local/bin/restic*
 .xinitrc
 setup-restic-cronjob.sh
 {{ end }}
 
-{{ if (and (ne .chezmoi.os "darwin") (ne .chezmoi.hostname "Kuro")) }}
+{{ if eq .chezmoi.hostname "Ferrum" }}
+## Ignore on Ferrum
+.config/*
+!.config/direnv
 !.config/starship.toml
-.config
 .indentconfig.yaml
 .local
 .sbclrc
