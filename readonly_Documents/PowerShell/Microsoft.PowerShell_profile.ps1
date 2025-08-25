@@ -4,4 +4,5 @@ Invoke-Expression (&starship init powershell)
 function Set-TerminalTitle {
     $host.UI.RawUI.WindowTitle = "$(Get-Location)"
 }
+Invoke-Expression "$(direnv hook pwsh)"
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
