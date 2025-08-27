@@ -36,6 +36,7 @@ install-fisher.fish
 
 {{ if ne .chezmoi.hostname "Ferrum" }}
 ## Only on Ferrum
+install-winget.ps1
 .gitconfig
 AppData
 Documents
