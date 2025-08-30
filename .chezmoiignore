@@ -5,6 +5,7 @@ ports.txt
 
 {{ if ne .chezmoi.os "darwin" }}
 ## Only on macOS
+.R/Makevars
 .config/emacs/**
 .local/bin/bean-*
 .local/bin/org-capture
