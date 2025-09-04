@@ -3,9 +3,8 @@
 import click
 import datetime
 import polars as pl
-import os
 import subprocess
-import rich
+import tempfile
 
 from pathlib import Path
 
@@ -13,70 +12,85 @@ from pathlib import Path
 @click.command()
 @click.argument("filename", type=click.Path(exists=True, path_type=Path))
 def main(filename):
-    tmp_dir = Path(os.environ.get("TMPDIR", Path("/tmp")))
-    output_file = tmp_dir / "transactions.csv"
-    query = r'SELECT date, account, CONVERT(position, "CHF") AS position WHERE (NOT account ~ "Vacation");'
-    command = [
-        "bean-query",
-        "--format",
-        "csv",
-        "--output",
-        output_file,
-        filename,
-        query,
-    ]
-    try:
-        subprocess.run(command, capture_output=True, text=True, check=True)
-    except FileNotFoundError:
-        print(f"Error: Command '{command[0]}' not found.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing command: {e}")
-        print(f"STDOUT: {e.stdout}")
-        print(f"STDERR: {e.stderr}")
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_dir = Path(tmp_dir)
+        output_file = tmp_dir / "transactions.csv"
+        query = r'SELECT date, account, CONVERT(position, "CHF") AS position WHERE (NOT account ~ "Vacation");'
+        command = [
+            "bean-query",
+            "--format",
+            "csv",
+            "--output",
+            output_file,
+            filename,
+            query,
+        ]
+        try:
+            subprocess.run(command, capture_output=True, text=True, check=True)
+        except FileNotFoundError:
+            click.echo(f"Error: Command '{command[0]}' not found.", err = True)
+        except subprocess.CalledProcessError as e:
+            click.echo(f"Error executing command: {e}", err = True)
+            click.echo(f"STDOUT: {e.stdout}", err = True)
+            click.echo(f"STDERR: {e.stderr}", err = True)
 
-    df = (
-        pl.read_csv(output_file)
-        .with_columns(
-            [
-                pl.col("date")
-                .str.strptime(pl.Date, "%Y-%m-%d", strict=False)
-                .alias("date"),
+        df = (
+            # Read in CSV and convert columns
+            pl.read_csv(output_file)
+            .with_columns(
+                [
+                    pl.col("date")
+                    .str.strptime(pl.Date, "%Y-%m-%d", strict=False)
+                    .alias("date"),
+                    pl.col("account"),
+                    pl.col("position")
+                    .str.strip_chars_start(" ")
+                    .str.head(n=-4)
+                    .cast(pl.Float64, strict=False)
+                    .alias("position"),
+                ]
+            )
+            # Refine which accounts count towards savings rate
+            # BVG is out of our control, as are Sozialabzüge
+            .filter(~(pl.col("account").str.contains(r"Income:.*:BVG")))
+            .filter(~(pl.col("account").str.contains(r"Expenses:CH:Sozialabzuge.*")))
+            # Extract root(account, 1) from account 
+            .with_columns(
                 pl.col("account").str.extract(r"^([^:]+)").alias("account"),
-                pl.col("position")
-                .str.strip_chars_start(" ")
-                .str.head(n=-4)
-                .cast(pl.Float64, strict=False)
-                .alias("position"),
-            ]
+            )
+            # Filter only for income/expenses of the preceding 365 days
+            .filter(
+                (pl.col("account").is_in(["Income", "Expenses"]))
+                & (
+                    pl.col("date")
+                    >= datetime.date.today() - datetime.timedelta(days=365)
+                )
+            )
+            # Add dummy "summary" column
+            .with_columns(pl.lit("summary").alias("summary"))
+            .group_by("summary", "account")
+            .agg(pl.col("position").sum().alias("position"))
+            .pivot(
+                index="summary",
+                on="account",
+                values="position",
+            )
+            .drop("summary")
+            .with_columns(
+                [
+                    (-pl.col("Income") - pl.col("Expenses")).alias("Saved"),
+                    (
+                        (-pl.col("Income") - pl.col("Expenses")) / -pl.col("Income")
+                    ).alias("Savings Rate"),
+                ]
+            )
         )
-        .filter(
-            (pl.col("account").is_in(["Income", "Expenses"]))
-            & (pl.col("date") >= datetime.date.today() - datetime.timedelta(days=365))
-        )
-        .with_columns(pl.lit("summary").alias("summary"))
-        .group_by("summary", "account")
-        .agg(pl.col("position").sum().alias("position"))
-        .pivot(
-            index="summary",
-            on="account",
-            values="position",
-        )
-        .drop("summary")
-        .with_columns(
-            [
-                (-pl.col("Income") - pl.col("Expenses")).alias("Saved"),
-                ((-pl.col("Income") - pl.col("Expenses")) / -pl.col("Income")).alias(
-                    "Savings Rate"
-                ),
-            ]
-        )
-    )
 
     width = 8
-    rich.print(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
-    rich.print(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
-    rich.print(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
-    rich.print(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
+    click.echo(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
+    click.echo(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
+    click.echo(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
+    click.echo(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
 
 
 if __name__ == "__main__":
