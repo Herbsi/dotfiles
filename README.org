@@ -8,3 +8,13 @@ Install by running
 #+begin_src  sh
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply Herbsi
 #+end_src
+
+** Windows installation notes
+
+If ~%USERPROFILE%~ contains problematic characters, then winget might not update ~PATH~ correctly.
+To check, press ~Win + R~, enter ~SystemPropertiesAdvanced~, click ~Environment Variables...~ and check the values in ~PATH~.
+
+You may need to run ~powershell -ExecutionPolicy ByPass -c chezmoi apply~ the first time, so that the install scripts are executed.
+
+- [ ] Install terminal theme.
+- [ ] Install fonts.

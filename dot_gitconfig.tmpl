@@ -1,5 +1,5 @@
-{{- template "git/config.tmpl" . -}}
+{{- template "git/config.tmpl" .}}
 
 [core]
-    sshCommand = ssh.exe
+    sshCommand = "C:/Windows/System32/OpenSSH/ssh.exe"
     editor = {{ .git.editor | quote }}
