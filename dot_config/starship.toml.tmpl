@@ -25,6 +25,16 @@ command = 'jj log -r @ --no-graph --color always -T prompt && jj op log -T "id.s
 
 [custom.jjstate]
 when = "jj root"
+{{- if eq .chezmoi.hostname "Ferrum" }}
+command = '''
+jj log -r@ -n1 --no-graph -T "" --stat |
+  Get-Content -Tail 1 |
+  sd "(\\d+) files? changed, (\\d+) insertions?\\(\\+\\), (\\d+) deletions?\\(-\\)" ' ${1}m ${2}+ ${3}-' |
+  sd " 0\." ""
+'''
+{{- end }}
+{{- if ne .chezmoi.hostname "Ferrum" }}
 command = '''
 jj log -r@ -n1 --no-graph -T "" --stat | tail -n1 | sd "(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)" ' ${1}m ${2}+ ${3}-' | sd " 0." ""
 '''
+{{- end }}
