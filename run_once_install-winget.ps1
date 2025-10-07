@@ -1,6 +1,7 @@
 winget install Adobe.Acrobat.Reader.64-bit
 winget install BurntSushi.ripgrep.MSVC
 winget install Casey.Just
+winget install Ditto.Ditto
 winget install Git.Git
 winget install GitHub.cli
 winget install JRSoftware.InnoSetup
