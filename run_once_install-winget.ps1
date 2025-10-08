@@ -10,6 +10,7 @@ winget install Microsoft.VisualStudioCode
 winget install Notepad++.Notepad++
 winget install RProject.R
 winget install Rustlang.Rustup
+winget install abdenasser.NeoHtop
 winget install astral-sh.uv
 winget install chmln.sd
 winget install direnv
