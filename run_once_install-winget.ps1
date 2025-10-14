@@ -13,6 +13,7 @@ winget install Rustlang.Rustup
 winget install abdenasser.NeoHtop
 winget install astral-sh.uv
 winget install chmln.sd
+winget install dandavison.delta
 winget install direnv
 winget install jftuga.less
 winget install jj-vcs.jj
