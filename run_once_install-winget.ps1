@@ -1,4 +1,5 @@
 winget install Adobe.Acrobat.Reader.64-bit
+winget install Asana.Asana
 winget install BurntSushi.ripgrep.MSVC
 winget install Casey.Just
 winget install Ditto.Ditto
@@ -8,6 +9,7 @@ winget install JRSoftware.InnoSetup
 winget install Microsoft.Powershells
 winget install Microsoft.VisualStudioCode
 winget install Notepad++.Notepad++
+winget install Obsidian.Obsidian
 winget install RProject.R
 winget install Rustlang.Rustup
 winget install abdenasser.NeoHtop
