@@ -1,24 +1,24 @@
-winget install Adobe.Acrobat.Reader.64-bit
-winget install Asana.Asana
-winget install BurntSushi.ripgrep.MSVC
-winget install Casey.Just
-winget install Ditto.Ditto
-winget install Git.Git
-winget install GitHub.cli
-winget install JRSoftware.InnoSetup
-winget install Microsoft.Powershells
-winget install Microsoft.VisualStudioCode
-winget install Notepad++.Notepad++
-winget install Obsidian.Obsidian
-winget install RProject.R
-winget install Rustlang.Rustup
-winget install abdenasser.NeoHtop
-winget install astral-sh.uv
-winget install chmln.sd
-winget install dandavison.delta
-winget install direnv
-winget install jftuga.less
-winget install jj-vcs.jj
-winget install junegunn.fzf
-winget install starship
-winget install zoxide
+winget install -e --id Adobe.Acrobat.Reader.64-bit
+winget install -e --id Asana.Asana
+winget install -e --id BurntSushi.ripgrep.MSVC
+winget install -e --id Casey.Just
+winget install -e --id Ditto.Ditto
+winget install -e --id Git.Git
+winget install -e --id GitHub.cli
+winget install -e --id JRSoftware.InnoSetup
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Notepad++.Notepad++
+winget install -e --id Obsidian.Obsidian
+winget install -e --id RProject.R
+winget install -e --id Rustlang.Rustup
+winget install -e --id SumatraPDF.SumatraPDF
+winget install -e --id abdenasser.NeoHtop
+winget install -e --id astral-sh.uv
+winget install -e --id chmln.sd
+winget install -e --id dandavison.delta
+winget install -e --id direnv
+winget install -e --id jftuga.less
+winget install -e --id jj-vcs.jj
+winget install -e --id junegunn.fzf
+winget install -e --id starship
+winget install -e --id zoxide
