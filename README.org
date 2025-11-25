@@ -11,6 +11,9 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply Herbsi
 
 ** Windows installation notes
 
+First things first, enable Developer Mode under System > Advanced in Settings.
+Among other things, this allows ~winget~ to create links and so ~PATH~ does not become too long.
+
 If ~%USERPROFILE%~ contains problematic characters, then winget might not update ~PATH~ correctly.
 To check, press ~Win + R~, enter ~SystemPropertiesAdvanced~, click ~Environment Variables...~ and check the values in ~PATH~.
 
