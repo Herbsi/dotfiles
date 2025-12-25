@@ -1,5 +1,11 @@
-#!/usr/bin/env python3
-
+#!/usr/bin/env uv run --script
+# -*- mode: python -*-
+# /// script
+# dependencies = [
+#   "click",
+#   "polars",
+# ]
+# ///
 import datetime
 import subprocess
 import tempfile
@@ -34,6 +40,9 @@ def main(filename):
             click.echo(f"STDOUT: {e.stdout}", err=True)
             click.echo(f"STDERR: {e.stderr}", err=True)
 
+        start_date = datetime.date.today() - datetime.timedelta(days=365)
+        end_date = datetime.date.today()
+
         df = (
             # Read in CSV and convert columns
             pl.read_csv(output_file)
@@ -50,20 +59,29 @@ def main(filename):
                     .alias("position"),
                 ]
             )
-            # Extract root(account, 1) from account
-            .with_columns(
-                pl.col("account").str.extract(r"^([^:]+)").alias("account"),
-            )
-            # Filter only for income/expenses of the preceding 365 days
             .filter(
-                (pl.col("account").is_in(["Income", "Expenses"]))
-                & (
-                    pl.col("date")
-                    >= datetime.date.today() - datetime.timedelta(days=365)
+                pl.col("date").is_between(
+                    start_date,
+                    end_date,
                 )
-                & (pl.col("date") <= datetime.date.today())
             )
-            # Add dummy "summary" column
+        )
+
+        income = df.filter(
+            (
+                (pl.col("account").str.contains("^Income"))
+                & ~(pl.col("account").str.contains("BVG"))
+            )
+            | pl.col("account").str.contains("CH:Sozialabzuge")
+        ).with_columns(pl.lit("Income").alias("account"))
+
+        expenses = df.filter(
+            pl.col("account").str.contains("^Expenses")
+            & ~(pl.col("account").str.contains("CH:Sozialabzuge"))
+        ).with_columns(pl.lit("Expenses").alias("account"))
+
+        df = (
+            income.vstack(expenses)
             .with_columns(pl.lit("summary").alias("summary"))
             .group_by("summary", "account")
             .agg(pl.col("position").sum().alias("position"))
@@ -84,6 +102,7 @@ def main(filename):
         )
 
     width = 8
+    click.echo(f"Monthly averages between {start_date} and {end_date}:")
     click.echo(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
     click.echo(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
     click.echo(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
