@@ -18,11 +18,7 @@ port-requested.sh
 {{ if ne .chezmoi.hostname "Kuro" }}
 ## Only on Kuro
 .config/ludusavi/*
-.config/restic/*
 .config/systemd/*
-.local/bin/restic*
-.xinitrc
-setup-restic-cronjob.sh
 {{ end }}
 
 {{ if eq .chezmoi.hostname "Ferrum" }}
