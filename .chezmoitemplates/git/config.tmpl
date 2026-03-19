@@ -1,14 +1,13 @@
 [user]
     name = {{ .git.name | quote }}
     email = {{ .git.email | quote }}
-    signingkey = {{ .git.signingkey }}
+    signingkey = {{ .git.signingkey | quote }}
 
 [init]
     defaultBranch = master
 
 [core]
-    autocrlf = input
-    eol = lf
+    autocrlf = false
     pager = delta
     whitespace = trailing-space
     

@@ -3,10 +3,11 @@ LICENSE
 PERSONALXLSB
 README.org
 ports.txt
+install-winget.ps1
 
 {{ if ne .chezmoi.os "darwin" }}
 ## Only on macOS
-.R/Makevars
+.R
 .config/emacs/**
 .local/bin/bean-*
 .local/bin/org-capture
@@ -19,12 +20,12 @@ port-requested.sh
 ## Only on Kuro
 .config/ludusavi/*
 .config/systemd/*
+setup-restic-cronjob.sh
 {{ end }}
 
-{{ if eq .chezmoi.hostname "Ferrum" }}
-## Ignore on Ferrum
+{{ if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
+## Ignore on work machine
 .config/*
-!.config/direnv
 !.config/starship.toml
 .indentconfig.yaml
 .local
@@ -32,9 +33,8 @@ port-requested.sh
 install-fisher.fish
 {{ end }}
 
-{{ if ne .chezmoi.hostname "Ferrum" }}
-## Only on Ferrum
-install-winget.ps1
+{{ if ne .chezmoi.hostname "SLCH-GM0G33YJ" }}
+## Only on work machine
 .gitconfig
 AppData
 Documents

@@ -6,3 +6,17 @@
 
 [gpg.ssh]
     program = "C:/Windows/System32/OpenSSH/ssh-keygen.exe"
+
+[merge]
+    guitool = bc
+
+[diff]
+    guitool = bc
+
+[difftool "bc"]
+	path = bcomp.exe
+	cmd = \"bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+
+[mergetool "bc"]
+	path = bcomp.exe
+	cmd = \"bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
