@@ -38,4 +38,5 @@ install-fisher.fish
 .gitconfig
 AppData
 Documents
+OneDrive - Swiss Life AG
 {{ end }}
