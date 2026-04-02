@@ -1,7 +1,1 @@
-jj util completion power-shell | Out-String | Invoke-Expression
-Invoke-Expression (&starship init powershell)
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
-function zoi { ii (zoxide query $args) }
-Set-Alias -Name zz -Value zoi
-$OutputEncoding = [System.Text.UTF8Encoding]::UTF8
-[Console]::OutputEncoding = [System.Text.UTF8Encoding]::UTF8
+{{- template "Microsoft.PowerShell_profile.ps1.tmpl" .}}
