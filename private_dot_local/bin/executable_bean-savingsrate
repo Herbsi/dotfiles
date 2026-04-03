@@ -63,6 +63,7 @@ def main(filename):
                 pl.col("date").is_between(
                     start_date,
                     end_date,
+                    closed="right"
                 )
             )
         )
@@ -102,7 +103,7 @@ def main(filename):
         )
 
     width = 8
-    click.echo(f"Monthly averages between {start_date} and {end_date}:")
+    click.echo(f"Monthly averages in ({start_date}, {end_date}]:")
     click.echo(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
     click.echo(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
     click.echo(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
