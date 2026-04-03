@@ -9,7 +9,6 @@ install-winget.ps1
 ## Only on macOS
 .R
 .config/emacs/**
-.local/bin/bean-*
 .local/bin/org-capture
 install-latex-packages.sh
 install-python-tools.sh
