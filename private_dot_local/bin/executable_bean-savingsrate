@@ -1,5 +1,4 @@
-#!/usr/bin/env uv run --script
-# -*- mode: python -*-
+#!/usr/bin/env -S uv run --script
 # /// script
 # dependencies = [
 #   "click",
@@ -59,13 +58,7 @@ def main(filename):
                     .alias("position"),
                 ]
             )
-            .filter(
-                pl.col("date").is_between(
-                    start_date,
-                    end_date,
-                    closed="right"
-                )
-            )
+            .filter(pl.col("date").is_between(start_date, end_date, closed="right"))
         )
 
         income = df.filter(
