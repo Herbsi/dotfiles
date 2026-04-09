@@ -20,3 +20,15 @@
 [mergetool "bc"]
 	path = bcomp.exe
 	cmd = \"bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+
+[credential "helperselector"]
+    selected = manager
+
+[credential "http://fi-r-git.slcloud.ch"]
+    provider = generic
+
+[safe]
+    directory = {{ .git.safe.directory | quote }}
+
+[http]
+    sslCAInfo = {{ .git.http.sslCAInfo | quote }}
