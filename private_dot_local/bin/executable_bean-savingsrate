@@ -16,7 +16,19 @@ import polars as pl
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True, path_type=Path))
-def main(filename):
+@click.option(
+    "--from",
+    "start_date",
+    type=click.DateTime(),
+    default=(datetime.date.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d"),
+)
+@click.option(
+    "--to",
+    "end_date",
+    type=click.DateTime(),
+    default=datetime.date.today().strftime("%Y-%m-%d"),
+)
+def main(filename, start_date, end_date):
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_dir = Path(tmp_dir)
         output_file = tmp_dir / "transactions.csv"
@@ -38,9 +50,6 @@ def main(filename):
             click.echo(f"Error executing command: {e}", err=True)
             click.echo(f"STDOUT: {e.stdout}", err=True)
             click.echo(f"STDERR: {e.stderr}", err=True)
-
-        start_date = datetime.date.today() - datetime.timedelta(days=365)
-        end_date = datetime.date.today()
 
         df = (
             # Read in CSV and convert columns
@@ -96,10 +105,19 @@ def main(filename):
         )
 
     width = 8
-    click.echo(f"Monthly averages in ({start_date}, {end_date}]:")
-    click.echo(f"Income:       {abs(df[0, 'Income']) / 12:>{width}.2f} CHF per month")
-    click.echo(f"Expenses:     {abs(df[0, 'Expenses']) / 12:>{width}.2f} CHF per month")
-    click.echo(f"Saved:        {df[0, 'Saved'] / 12:>{width}.2f} CHF per month")
+    click.echo(
+        f"Monthly averages in ({start_date.strftime('%Y-%m-%d')}, {end_date.strftime('%Y-%m-%d')}]:"
+    )
+    months = (
+        (end_date - start_date).days / 365.25 * 12
+    )  # Every month has 365.25 / 12 days
+    click.echo(
+        f"Income:       {abs(df[0, 'Income']) / months:>{width}.2f} CHF per month"
+    )
+    click.echo(
+        f"Expenses:     {abs(df[0, 'Expenses']) / months:>{width}.2f} CHF per month"
+    )
+    click.echo(f"Saved:        {df[0, 'Saved'] / months:>{width}.2f} CHF per month")
     click.echo(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
 
 
