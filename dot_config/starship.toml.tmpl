@@ -17,6 +17,7 @@ symbol = "🧊 "
 [typst]
 symbol = "t "
 
+{{- if ne .chezmoi.os "windows" }}
 [custom.jj]
 command = '''
 jj log --revisions @ --limit 1 --ignore-working-copy --no-graph --color always  --template '
@@ -37,15 +38,6 @@ symbol = "jj "
 [custom.jjstate]
 when = "jj --ignore-working-copy root"
 ignore_timeout = true
-{{- if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
-command = '''
-(jj log -r@ -n1 --ignore-working-copy --no-graph -T "" --stat |
-    Select-Object -Last 1) `
-    -replace '(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)', ' ${1}m ${2}+ ${3}-' `
-    -replace ' 0\.', ''
-'''
-{{- end }}
-{{- if ne .chezmoi.hostname "SLCH-GM0G33YJ" }}
 command = '''
 jj log -r@ -n1 --ignore-working-copy --no-graph -T "" --stat | tail -n1 | sd "(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)" ' ${1}m ${2}+ ${3}-' | sd " 0." ""
 '''
