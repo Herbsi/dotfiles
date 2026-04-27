@@ -31,6 +31,7 @@ setup-restic-cronjob.sh
 {{ if (eq .chezmoi.os "windows") }}
 ## On Windows, additionally ignore
 .config/*
+!.config/wezterm
 !.config/starship.toml
 install-fisher.fish
 {{ end }}
