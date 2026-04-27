@@ -28,7 +28,9 @@
     provider = generic
 
 [safe]
-    directory = {{ .git.safe.directory | quote }}
+{{- range .git.safe.directories }}
+    directory = {{ . | quote }}
+{{- end }}
 
 [http]
     sslCAInfo = {{ .git.http.sslCAInfo | quote }}
