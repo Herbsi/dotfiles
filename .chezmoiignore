@@ -24,17 +24,22 @@ setup-restic-cronjob.sh
 
 {{ if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
 ## Ignore on work machine
-.config/*
-!.config/starship.toml
+.config/enchant
 .indentconfig.yaml
 .local
 .sbclrc
+{{ if (eq .chezmoi.os "windows") }}
+## On Windows, additionally ignore
+.config/*
+!.config/starship.toml
 install-fisher.fish
 {{ end }}
+{{ end }}
 
-{{ if ne .chezmoi.hostname "SLCH-GM0G33YJ" }}
+{{ if (or (ne .chezmoi.hostname "SLCH-GM0G33YJ") (ne .chezmoi.os "windows")) }}
 ## Only on work machine
 .gitconfig
+set-path.ps1
 AppData
 Documents
 OneDrive - Swiss Life AG
