@@ -10,12 +10,13 @@ fish_add_path --global /usr/local/texlive/2025/bin/universal-darwin
 fish_add_path --global /Users/herwig/.config/emacs/bin
 fish_add_path --global /Users/herwig/.local/bin
 {{- end }}
-{{- if eq .chezmoi.hostname "Kuro" }}
+{{- if eq .chezmoi.hostname "kuro" }}
 fish_add_path --global /home/herwig/.config/emacs/bin
 {{- end }}
-{{- if eq .chezmoi.hostname "Ferrum" }}
-## Windows
+{{ if (and (eq .chezmoi.hostname "SLCH-GM0G33YJ") (eq .chezmoi.os "linux")) }}
+## WSL
 fish_add_path --global /snap/bin
+fish_add_path --global /home/linuxbrew/.linuxbrew/bin
 {{- end }}
 
 ### aliases
@@ -87,4 +88,13 @@ set -gx SSH_AUTH_SOCK $HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t
 {{- end }}
 {{- if eq .chezmoi.hostname "Kuro" }}
 set -gx SSH_AUTH_SOCK $HOME/.1password/agent.sock
+{{- end }}
+{{- if (and (eq .chezmoi.hostname "SLCH-GM0G33YJ") (eq .chezmoi.os "linux")) }}
+set -gx SSH_AUTH_SOCK $HOME/.ssh/agent.sock
+
+if not ss -a | grep -q $SSH_AUTH_SOCK
+    rm -f $SSH_AUTH_SOCK
+    setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork \
+        EXEC:"{{- .fish.npiperelayexe }} -ei -s //./pipe/openssh-ssh-agent" &
+end
 {{- end }}
