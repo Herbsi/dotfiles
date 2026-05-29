@@ -11,6 +11,8 @@ config.color_scheme = "GruvboxDarkHard"
 config.scrollback_lines = 8192
 config.enable_scroll_bar = true
 
+config.mux_enable_ssh_agent = false
+
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     config.default_prog = { 'C:/Users/hohe/scoop/shims/pwsh.exe', '-NoLogo' }
 end
