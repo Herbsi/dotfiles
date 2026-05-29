@@ -6,7 +6,7 @@ config.initial_rows = 28
 
 config.font_size = 11
 config.font = wezterm.font("Aporetic Serif Mono")
-config.color_scheme = "GruvboxDarkHard"
+config.color_scheme = "Modus-Vivendi"
 
 config.scrollback_lines = 8192
 config.enable_scroll_bar = true
