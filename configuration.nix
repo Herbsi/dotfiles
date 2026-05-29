@@ -15,8 +15,13 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.xserver.enable = true;
-  services.xserver.xkb.layout = "us";
-  services.xserver.xkb.options = "caps:control";
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "mac";
+  };
+  services.xserver.xkb.options = "ctrl:nocaps";
+  console.useXkbConfig = true;
+
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
@@ -27,6 +32,10 @@
     pulse.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   users.users.herwig = {
     isNormalUser = true;
     shell = pkgs.fish;
@@ -34,9 +43,53 @@
   };
 
   environment.systemPackages = with pkgs; [
+    _1password-gui
+    _1password-cli
+    age
+    bat
+    beancount
+    bottom
+    calibre
+    chezmoi
+    coreutils
     curl
+    discord
+    docker
+    dust
+    emacs-pgtk
+    eza
+    fastmail-desktop
+    fava
+    fd
+    fzf
     git
+    google-chrome
+    gnupg
+    inkscape
+    imagemagick
+    jq
+    jujutsu
+    julia
+    lazydocker
+    lua
     neovim
+    kdePackages.okular
+    R
+    ripgrep
+    ruff
+    rustup
+    sbcl
+    spotify
+    tmux
+    tree-sitter
+    typst
+    typstyle
+    uv
+    viddy
+    wezterm
+    xdg-utils
+    xdg-user-dirs
+    zotero
   ];
   
   environment.localBinInPath = true;
@@ -47,7 +100,62 @@
     polkitPolicyOwners = [ "herwig" ];
   };
   programs.fish.enable = true;
+  programs.direnv.enable = true;
+  programs.ssh = {
+    startAgent = false;
+    extraConfig = ''
+      Host *
+        IdentityAgent "~/.1password/agent.sock"
+    '';
+  };
   programs.steam.enable = true;
+  programs.starship.enable = true;
+
+  age.identityPaths = [
+    "/etc/ssh/id_ed25519"
+  ];
+  age.secrets.restic-env.file = ./secrets/restic-env.age;
+
+  services.restic.backups = {
+    HOME = {
+      repository = "s3:s3.us-west-001.backblazeb2.com/kuro-restic";
+      environmentFile = config.age.secrets.restic-env.path;
+      # TODO 2026-06-06 Replace hard-coded paths
+      paths = [
+        "/home/herwig/Archive"
+        "/home/herwig/Git"
+        "/home/herwig/Org"
+        "/home/herwig/Resources"
+        "/home/herwig/.dotfiles"
+      ];
+      exclude = [
+        "**/__pycache__"
+        "**/*.pyc"
+        "**/*.pyo"
+        "**/.pytest_cache"
+        "**/.mypy_cache"
+        "**/.ruff_cache"
+        "**/dist"
+        "**/.egg-info"
+        "**/.venv"
+        "**/target"
+        "**/.cargo/registry"
+        "**/bin"
+        "**/obj"
+        "**/.Rhistory"
+      ];
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true;
+      };
+      pruneOpts = [
+        "--keep-daily 7"
+        "--keep-weekly 4"
+        "--keep-monthly 12"
+      ];
+      extraBackupArgs = [ "--skip-if-unchanged" ];
+    };
+  };
 
   environment.sessionVariables = {
     XDG_BIN_HOME = "$HOME/.local/bin";

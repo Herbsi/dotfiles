@@ -5,28 +5,29 @@
 
 {
   imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ahci" "virtio_pci" "xhci_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/6531e645-c5a8-4450-9ad9-b741ea85bf4e";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/17b7992a-87c7-4da4-8f6b-87c07101cecf";
+      fsType = "btrfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5B66-A6D9";
+    { device = "/dev/disk/by-uuid/36F0-EA2F";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/43a294e3-2469-4070-8ffc-c000ea8d0655"; }
+    [ { device = "/dev/disk/by-uuid/794879f6-5eb8-4da4-ae99-0d3f5a228c54"; }
     ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cup.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

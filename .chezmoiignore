@@ -1,0 +1,44 @@
+LICENSE
+README.org
+*.nix
+flake.lock
+
+ports.txt
+
+PERSONALXLSB
+install-winget.ps1
+
+# TODO
+.config/ludusavi/*
+setup-restic-cronjob.sh
+
+{{ if ne .chezmoi.os "darwin" }}
+## Only on macOS
+.R
+install-python-tools.sh
+port-requested.sh
+{{ end }}
+
+{{ if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
+## Ignore on work machine
+.config/enchant
+.local
+.sbclrc
+{{ if (eq .chezmoi.os "windows") }}
+## On Windows, additionally ignore
+.config/*
+install-fisher.fish
+## Except for these
+!.config/wezterm
+!.config/starship.toml
+{{ end }}
+{{ end }}
+
+{{ if (or (ne .chezmoi.hostname "SLCH-GM0G33YJ") (ne .chezmoi.os "windows")) }}
+## Only on work machine on Windows
+.gitconfig
+set-path.ps1
+AppData
+Documents
+OneDrive - Swiss Life AG
+{{ end }}

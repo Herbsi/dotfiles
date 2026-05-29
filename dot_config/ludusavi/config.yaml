@@ -1,0 +1,72 @@
+---
+runtime:
+  threads: ~
+release:
+  check: true
+manifest:
+  enable: true
+language: en-US
+theme: dark
+roots:
+  - store: steam
+    path: /home/herwig/.steam/debian-installation
+  - store: lutris
+    path: /home/herwig/.config/lutris
+    database: ~
+  - store: steam
+    path: /home/herwig/.local/share/Steam
+redirects: []
+backup:
+  path: /home/herwig/Resources/Gamesaves
+  ignoredGames: []
+  filter:
+    excludeStoreScreenshots: false
+    cloud:
+      exclude: false
+      epic: false
+      gog: false
+      origin: false
+      steam: false
+      uplay: false
+    ignoredPaths: []
+    ignoredRegistry: []
+  toggledPaths: {}
+  toggledRegistry: {}
+  sort:
+    key: status
+    reversed: false
+  retention:
+    full: 1
+    differential: 0
+  format:
+    chosen: simple
+    zip:
+      compression: deflate
+    compression:
+      deflate:
+        level: 6
+      bzip2:
+        level: 6
+      zstd:
+        level: 10
+restore:
+  path: /home/herwig/ludusavi-backup
+  ignoredGames: []
+  toggledPaths: {}
+  toggledRegistry: {}
+  sort:
+    key: status
+    reversed: false
+scan:
+  showDeselectedGames: true
+  showUnchangedGames: true
+  showUnscannedGames: true
+cloud:
+  remote: ~
+  path: ludusavi-backup
+  synchronize: true
+apps:
+  rclone:
+    path: ""
+    arguments: "--fast-list --ignore-checksum"
+customGames: []

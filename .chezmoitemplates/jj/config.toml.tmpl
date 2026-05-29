@@ -1,0 +1,52 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = {{ .git.name | quote }}
+email = {{ .git.email | quote }}
+
+[signing]
+behavior = "drop"
+backend = "ssh"
+key = {{ .git.signingkey | quote }}
+
+[git]
+sign-on-push = true
+# Prevent pushing work in progress or anything explicitly labeled "private"
+private-commits = "description('wip:*') | description('private:*')"
+
+[working-copy]
+eol-conversion = "input"
+
+[ui]
+default-command = "log"
+graph.style = "ascii"
+
+[template-aliases]
+prompt = '''
+separate(" ",
+  label(
+    separate(" ",
+      if(current_working_copy, "working_copy"),
+      if(immutable, "immutable"),
+      if(conflict, "conflict"),
+      if(divergent, "divergent"),
+      if(hidden, "hidden"),
+    ),
+    if(divergent, "??", if(conflict, "×", "@")),
+  ),
+  change_id.shortest(4),
+  if(empty,
+    label("empty",
+      concat(
+        "(∅",
+        if(!description, ",Đ"),
+        ")",
+      ),
+    ),
+  ),
+  if(description,
+    truncate_end(13, description.first_line(), "…"),
+    label("description placeholder", if(!empty, "(Đ)")),
+  ),
+) ++ " "
+'''

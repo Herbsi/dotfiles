@@ -1,0 +1,2 @@
+LDFLAGS += -L/opt/local/lib/libomp -lomp
+CPPFLAGS += -I/opt/local/include/libomp -Xclang -fopenmp
