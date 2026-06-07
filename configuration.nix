@@ -76,6 +76,7 @@
     kdePackages.okular
     R
     ripgrep
+    restic
     ruff
     rustup
     sbcl
