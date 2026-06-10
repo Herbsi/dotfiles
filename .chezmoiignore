@@ -1,7 +1,8 @@
 LICENSE
-README.org
-*.nix
+README.md
+**/*.nix
 flake.lock
+secrets/
 
 PERSONALXLSB
 install-winget.ps1
