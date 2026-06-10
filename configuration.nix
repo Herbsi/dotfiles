@@ -167,6 +167,7 @@
   };
 
   environment.variables = {
+    EDITOR = "nvim";
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
     # Python
     IPYTHONDIR = "$XDG_CONFIG_HOME/ipython";
