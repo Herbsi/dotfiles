@@ -1,19 +1,14 @@
 LICENSE
 README.org
-ports.txt
+*.nix
+flake.lock
 
 PERSONALXLSB
 install-winget.ps1
 
-# TODO
-.config/ludusavi/*
-setup-restic-cronjob.sh
-
 {{ if ne .chezmoi.os "darwin" }}
 ## Only on macOS
 .R
-install-python-tools.sh
-port-requested.sh
 {{ end }}
 
 {{ if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
