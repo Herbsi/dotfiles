@@ -46,34 +46,43 @@
     _1password-gui
     _1password-cli
     age
+    air-formatter
     bat
     beancount
     bottom
     calibre
     chezmoi
+    clang
     coreutils
     curl
+    delta
     discord
     docker
     dust
     emacs-pgtk
+    enchant
     eza
     fastmail-desktop
     fava
     fd
     fzf
+    gcc
     git
     google-chrome
     gnupg
+    hunspell
     inkscape
     imagemagick
     jq
     jujutsu
     julia
     lazydocker
+    llvm
     lua
     neovim
     kdePackages.okular
+    opencode
+    pkg-config
     R
     ripgrep
     restic
@@ -102,6 +111,16 @@
   };
   programs.fish.enable = true;
   programs.direnv.enable = true;
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
+    loadModels = [ "gemma4:latest" ];
+    environmentVariables = {
+      OLLAMA_CONTEXT_LENGTH = "32768";
+    };
+  };
+
   programs.ssh = {
     startAgent = false;
     extraConfig = ''
