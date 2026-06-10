@@ -165,7 +165,7 @@
         "**/.Rhistory"
       ];
       timerConfig = {
-        OnCalendar = "daily";
+        OnCalendar = "hourly";
         Persistent = true;
       };
       pruneOpts = [
