@@ -146,6 +146,7 @@
         "/home/herwig/Git"
         "/home/herwig/Org"
         "/home/herwig/Resources"
+        "/home/herwig/.config/emacs"
         "/home/herwig/.dotfiles"
       ];
       exclude = [
