@@ -12,6 +12,8 @@ config.enable_scroll_bar = true
 
 config.mux_enable_ssh_agent = false
 
+config.font = wezterm.font("Triplicate A Code")
+
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     config.default_prog = { 'C:/Users/hohe/scoop/shims/pwsh.exe', '-NoLogo' }
     config.font = wezterm.font("Aporetic Serif Mono")
