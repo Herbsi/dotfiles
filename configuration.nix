@@ -49,6 +49,7 @@
     air-formatter
     bat
     beancount
+    beanquery
     bottom
     calibre
     chezmoi
@@ -69,6 +70,7 @@
     gcc
     git
     google-chrome
+    gnumake
     gnupg
     hunspell
     inkscape
@@ -82,7 +84,6 @@
     neovim
     kdePackages.okular
     opencode
-    pkg-config
     R
     ripgrep
     restic
