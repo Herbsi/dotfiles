@@ -104,6 +104,9 @@
   ];
   
   environment.localBinInPath = true;
+  nix.settings = {
+    use-xdg-base-directories = true;
+  };
 
   programs._1password.enable = true;
   programs._1password-gui = {
@@ -189,7 +192,11 @@
 
   environment.variables = {
     EDITOR = "nvim";
+    HISTFILE = "$XDG_STATE_HOME/bash/history";
+    NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
+    OLLAMA_MODELS = "$XDG_DATA_HOME/ollama/models";
+    XCURSOR_PATH = lib.mkForce "$HOME/.local/share/icons:/run/current-system/sw/share/icons:/usr/share/icons";
     # Python
     IPYTHONDIR = "$XDG_CONFIG_HOME/ipython";
     JUPYTOR_CONFIG_DIR = "$XDG_CONFIG_HOME/jupyter";
