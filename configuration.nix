@@ -61,6 +61,7 @@
     docker
     dust
     emacs-pgtk
+    editorconfig-core-c
     enchant
     eza
     fastmail-desktop
@@ -82,8 +83,10 @@
     llvm
     lua
     neovim
+    nixfmt
     kdePackages.okular
     opencode
+    python3
     R
     ripgrep
     restic
@@ -91,6 +94,7 @@
     rustup
     sbcl
     spotify
+    stylua
     tmux
     tree-sitter
     typst
@@ -150,7 +154,9 @@
         "/home/herwig/Git"
         "/home/herwig/Org"
         "/home/herwig/Resources"
+        "/home/herwig/.config/chezmoi"
         "/home/herwig/.config/emacs"
+        "/home/herwig/.config/nvim"
         "/home/herwig/.dotfiles"
       ];
       exclude = [
@@ -191,6 +197,7 @@
   };
 
   environment.variables = {
+    BEANCOUNT_LEDGER = "/home/herwig/Org/19990206T030000==1--ledger.beancount";
     EDITOR = "nvim";
     HISTFILE = "$XDG_STATE_HOME/bash/history";
     NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
