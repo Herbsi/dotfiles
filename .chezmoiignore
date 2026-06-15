@@ -1,5 +1,6 @@
 LICENSE
 README.md
+Brewfile
 **/*.nix
 flake.lock
 secrets/
