@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [ ];
@@ -12,7 +17,10 @@
   networking.networkmanager.enable = true;
   time.timeZone = "Europe/Zurich";
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.xserver.enable = true;
   services.xserver.xkb = {
@@ -46,67 +54,52 @@
     _1password-gui
     _1password-cli
     age
-    air-formatter
     bat
     beancount
     beanquery
     bottom
     calibre
     chezmoi
-    clang
     coreutils
     curl
     delta
     discord
+    direnv
     docker
     dust
     emacs-pgtk
-    editorconfig-core-c
     enchant
     eza
     fastmail-desktop
     fava
     fd
     fzf
-    gcc
     git
     google-chrome
-    gnumake
     gnupg
     hunspell
     inkscape
     imagemagick
     jq
     jujutsu
-    julia
     lazydocker
-    llvm
-    lua
     neovim
+    nix-direnv
     nixfmt
     kdePackages.okular
     opencode
-    python3
-    R
     ripgrep
     restic
-    ruff
-    rustup
-    sbcl
     spotify
-    stylua
     tmux
     tree-sitter
-    typst
-    typstyle
-    uv
     viddy
     wezterm
     xdg-utils
     xdg-user-dirs
     zotero
   ];
-  
+
   environment.localBinInPath = true;
   nix.settings = {
     use-xdg-base-directories = true;
@@ -119,6 +112,7 @@
   };
   programs.fish.enable = true;
   programs.direnv.enable = true;
+  programs.nix-ld.enable = true;
 
   services.ollama = {
     enable = true;
@@ -174,6 +168,7 @@
         "**/bin"
         "**/obj"
         "**/.Rhistory"
+        "**/renv"
       ];
       timerConfig = {
         OnCalendar = "hourly";
@@ -240,4 +235,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
 }
-
