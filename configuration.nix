@@ -82,6 +82,7 @@
     imagemagick
     jq
     jujutsu
+    just
     lazydocker
     neovim
     nix-direnv
@@ -98,6 +99,7 @@
     xdg-utils
     xdg-user-dirs
     zotero
+    zoxide
   ];
 
   environment.localBinInPath = true;
