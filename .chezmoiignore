@@ -9,6 +9,7 @@ install-winget.ps1
 
 {{ if ne .chezmoi.os "darwin" }}
 ## Only on macOS
+.config/com.googlecode.iterm2.plist
 .R
 {{ end }}
 
