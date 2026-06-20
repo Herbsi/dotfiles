@@ -150,6 +150,7 @@
         "/home/herwig/Git"
         "/home/herwig/Org"
         "/home/herwig/Resources"
+        "/home/herwig/.config/calibre"
         "/home/herwig/.config/chezmoi"
         "/home/herwig/.config/emacs"
         "/home/herwig/.config/nvim"
