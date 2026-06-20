@@ -19,25 +19,18 @@ fish_add_path --global /snap/bin
 {{- end }}
 
 ### aliases
+alias R='R --silent --no-save'
 alias clr="clear"
 alias cp="cp -i"
 alias e="emacsclient --create-frame"
+alias eza="eza --group-directories-first --git";
+alias l="eza -1";
+alias la="LC_COLLATE=C eza -la";
+alias ll="eza -lg";
 alias mkdir="mkdir -pv"
 alias mv="mv -i"
 alias rm="rm -i"
 alias wget='wget -c'
-
-if command -v R > /dev/null;
-    alias R='R --silent --no-save'
-end
-
-if command -v eza > /dev/null;
-    alias eza="eza --group-directories-first --git";
-    alias l="eza -1";
-    alias ll="eza -lg";
-    alias la="LC_COLLATE=C eza -la";
-end
-
 
 ### Direnv
 if command -v direnv > /dev/null;
