@@ -67,6 +67,7 @@
     discord
     direnv
     docker
+    duf
     dust
     emacs-pgtk
     enchant
@@ -90,6 +91,7 @@
     nixfmt
     kdePackages.okular
     opencode
+    procs
     ripgrep
     restic
     spotify
