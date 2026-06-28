@@ -99,6 +99,7 @@
     wezterm
     xdg-utils
     xdg-user-dirs
+    zellij
     zotero
     zoxide
   ];
