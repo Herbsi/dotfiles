@@ -73,12 +73,25 @@ set fzf_fd_opts --hidden \
     --exclude=site-packages
 
 set fzf_preview_dir_cmd eza --all --color=always
-fzf_configure_bindings --directory=\ct
+fzf_configure_bindings --directory=\ct --history=
+{{- if eq .chezmoi.os "darwin" }}
+source /opt/local/share/fzf/shell/key-bindings.fish
+{{- end }}
+
+
+### atuin
+if command -v atuin > /dev/null;
+    set -gx ATUIN_NOBIND "true"
+    atuin init fish | source
+
+    # bind to ctrl-r in normal and insert mode, add any other bindings you want here too
+    bind \cr _atuin_search
+    bind -M insert \cr _atuin_search
+end
+
 
 {{- if eq .chezmoi.os "darwin" }}
-### macOS settings
-## Shell integration
-source "/opt/local/share/fzf/shell/key-bindings.fish"
+### iTerm2 integration
 source $XDG_CONFIG_HOME/fish/iterm2_shell_integration.fish
 {{- end }}
 
