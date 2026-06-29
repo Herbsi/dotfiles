@@ -24,6 +24,7 @@ install-winget.ps1
 .config/*
 install-fisher.fish
 ## Except for these
+!.config/atuin
 !.config/wezterm
 !.config/starship.toml
 {{ end }}
