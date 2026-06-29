@@ -1,15 +1,25 @@
+$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-$OutputEncoding = [System.Text.UTF8Encoding]::UTF8
-[Console]::OutputEncoding = [System.Text.UTF8Encoding]::UTF8
+$Env:SHELL = "pwsh"
 
+Import-Module PSCompletions
+
+atuin init powershell | Out-String | Invoke-Expression
 jj util completion power-shell | Out-String | Invoke-Expression
 
+$prompt = ""
+function Invoke-Starship-PreCommand {
+    $current_location = $executionContext.SessionState.Path.CurrentLocation
+    if ($current_location.Provider.Name -eq "FileSystem") {
+        [System.Environment]::CurrentDirectory = $current_location.ProviderPath
+        $ansi_escape = [char]27
+        $provider_path = $current_location.ProviderPath -replace "\\", "/"
+        $prompt = "$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}$ansi_escape\"
+    }
+    $host.ui.Write($prompt)
+}
 Invoke-Expression (&starship init powershell)
 
-Import-Module PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-Set-PsFzfOption -EnableAll
-
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
-function zoi { ii (zoxide query $args) }
-Set-Alias -Name zz -Value zoi
+
