@@ -157,7 +157,6 @@
         "/home/herwig/.config/calibre"
         "/home/herwig/.config/chezmoi"
         "/home/herwig/.config/emacs"
-        "/home/herwig/.config/nvim"
         "/home/herwig/.dotfiles"
       ];
       exclude = [
@@ -200,7 +199,7 @@
 
   environment.variables = {
     BEANCOUNT_LEDGER = "/home/herwig/Org/19990206T030000==1--ledger.beancount";
-    EDITOR = "nvim";
+    EDITOR = "emacsclient -nw";
     HISTFILE = "$XDG_STATE_HOME/bash/history";
     NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
