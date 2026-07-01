@@ -86,6 +86,7 @@
     jujutsu
     just
     lazydocker
+    lua-language-server
     neovim
     nix-direnv
     nixfmt
@@ -95,7 +96,7 @@
     ripgrep
     restic
     spotify
-    tmux
+    stylua
     tree-sitter
     viddy
     wezterm

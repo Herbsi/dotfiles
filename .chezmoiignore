@@ -1,6 +1,7 @@
 LICENSE
 README.md
 Brewfile
+stylua.toml
 **/*.nix
 flake.lock
 secrets/
