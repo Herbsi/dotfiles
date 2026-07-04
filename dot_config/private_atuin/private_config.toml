@@ -291,6 +291,31 @@ records = true
 ## The port that should be used for TCP on non unix systems
 # tcp_port = 8889
 
+[logs]
+
+# enabled = true
+dir = "~/.local/state/atuin/logs"
+# level = "info"
+# retention = 4
+
+[logs.ai]
+# enabled = logs.enabled
+# file = "ai.log"
+# level = logs.level
+# retention = logs.retention
+
+[logs.daemon]
+# enabled = logs.enabled
+# file = "daemon.log"
+# level = logs.level
+# retention = logs.retention
+
+[logs.search]
+# enabled = logs.enabled
+# file = "search.log"
+# level = logs.level
+# retention = logs.retention
+
 # [theme]
 ## Color theme to use for rendering in the terminal.
 ## There are some built-in themes, including the base theme ("default"),
