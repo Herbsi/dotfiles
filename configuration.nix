@@ -102,6 +102,7 @@
     wezterm
     xdg-utils
     xdg-user-dirs
+    yazi
     zellij
     zotero
     zoxide
