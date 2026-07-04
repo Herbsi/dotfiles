@@ -201,7 +201,7 @@
   };
 
   environment.variables = {
-    BEANCOUNT_LEDGER = "/home/herwig/Org/19990206T030000==1--ledger.beancount";
+    BEANCOUNT_FILE = "/home/herwig/Org/19990206T030000==1--ledger.beancount";
     EDITOR = "emacsclient -nw";
     HISTFILE = "$XDG_STATE_HOME/bash/history";
     NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
