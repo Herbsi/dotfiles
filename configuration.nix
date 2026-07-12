@@ -50,6 +50,8 @@
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
+  services.tailscale.enable = true;
+
   environment.systemPackages = with pkgs; [
     _1password-gui
     _1password-cli
