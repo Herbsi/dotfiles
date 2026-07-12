@@ -49,7 +49,7 @@ auto_sync = false
 ## which filter mode to use by default
 ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
 ## consider using search.filters to customize the enablement and order of filter modes
-filter_mode = "session"
+filter_mode = "session-preload"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false).
