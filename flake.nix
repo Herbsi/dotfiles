@@ -14,8 +14,14 @@
     {
       nixosConfigurations.kuro = nixpkgs.lib.nixosSystem {
         modules = [
-          ./hardware-configuration.nix
-          ./configuration.nix
+          ./hosts/kuro/configuration.nix
+          agenix.nixosModules.default
+        ];
+      };
+
+      nixosConfigurations.midori = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/midori/configuration.nix
           agenix.nixosModules.default
         ];
       };
