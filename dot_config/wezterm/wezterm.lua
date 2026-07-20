@@ -12,6 +12,7 @@ config.initial_cols = 120
 config.initial_rows = 28
 config.mux_enable_ssh_agent = false
 config.scrollback_lines = 8192
+config.window_close_confirmation = "NeverPrompt"
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     config.default_prog = {
