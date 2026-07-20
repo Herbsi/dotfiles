@@ -34,3 +34,5 @@
 
 [http]
     sslCAInfo = {{ .git.http.sslCAInfo | quote }}
+    sslVerify = false
+    sslBackend = schannel
