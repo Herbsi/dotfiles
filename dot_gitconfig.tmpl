@@ -3,6 +3,7 @@
 [core]
     sshCommand = "C:/Windows/System32/OpenSSH/ssh.exe"
     editor = {{ .git.editor | quote }}
+    excludesFile = {{ .git.excludesFile }}
 
 [gpg.ssh]
     program = "C:/Windows/System32/OpenSSH/ssh-keygen.exe"
