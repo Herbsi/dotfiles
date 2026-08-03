@@ -21,7 +21,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
         "-Command",
         "zellij -l welcome",
     }
-    config.font = wezterm.font("Aporetic Serif Mono")
+    config.font = wezterm.font("FiraMono Nerd Font Mono")
     config.allow_win32_input_mode = false
 end
 
