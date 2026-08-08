@@ -91,7 +91,6 @@
     nix-direnv
     nixfmt
     kdePackages.okular
-    opencode
     procs
     ripgrep
     restic
