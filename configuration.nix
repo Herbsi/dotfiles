@@ -67,6 +67,7 @@
     discord
     direnv
     docker
+    dua
     duf
     dust
     emacs-pgtk
