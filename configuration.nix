@@ -73,7 +73,6 @@
     emacs-pgtk
     enchant
     eza
-    fastmail-desktop
     fava
     fd
     fzf
