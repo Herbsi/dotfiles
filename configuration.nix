@@ -77,7 +77,6 @@
     fd
     fzf
     git
-    google-chrome
     gnupg
     hunspell
     inkscape
@@ -86,6 +85,7 @@
     jujutsu
     just
     lazydocker
+    librewolf
     lua-language-server
     neovim
     nix-direnv
