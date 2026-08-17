@@ -91,6 +91,7 @@
     nix-direnv
     nixfmt
     kdePackages.okular
+    pi-coding-agent
     procs
     ripgrep
     restic
