@@ -3,7 +3,16 @@ local config = wezterm.config_builder()
 
 config.color_scheme = "Modus-Vivendi"
 config.default_prog = { "zellij", "-l", "welcome" }
+
 config.enable_kitty_keyboard = true
+config.keys = {
+  {
+    key = 'Delete',
+    mods = 'NONE',
+    action = wezterm.action.SendString '\x1b[3~',
+  }
+}
+
 config.enable_scroll_bar = true
 config.font = wezterm.font("Triplicate A Code")
 config.font_size = 11
