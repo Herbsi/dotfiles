@@ -123,19 +123,6 @@
 
   programs.nix-ld.enable = true;
 
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-vulkan;
-    loadModels = [
-      "gemma4:latest"
-      "kimi-k3:cloud"
-      "qwen3.8:latest"
-    ];
-    environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "32768";
-    };
-  };
-
   programs.ssh = {
     startAgent = false;
     extraConfig = ''
