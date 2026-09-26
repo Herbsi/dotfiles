@@ -1,14 +1,26 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }:
+let
+  # Ledgers live on the server: fava and the dashboard read them,
+  # herwig (group member) rsyncs them in
+  beancountDir = "/var/lib/beancount";
+  ledgerMain = "${beancountDir}/19990206T030000==1--ledger.beancount";
+  favaPort = 5050;
 
+  fava-run = pkgs.writeShellScript "fava-run" ''
+    exec ${lib.getExe pkgs.fava} --host 127.0.0.1 --port ${toString favaPort} ${beancountDir}/*.beancount
+  '';
+in
 {
   imports = [
     ../../default.nix
     ./hardware-configuration.nix
+    inputs.bean-dashboard.nixosModules.default
   ];
 
   networking.hostName = "midori";
@@ -48,10 +60,16 @@
 
   users.users = {
     root.hashedPassword = "!"; # Disable login
-    herwig.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILv7Pl+daulldPY7Ldss+dlN33J7I/YXzccvzfCr4e7n"
-    ];
+    herwig = {
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILv7Pl+daulldPY7Ldss+dlN33J7I/YXzccvzfCr4e7n"
+      ];
+      extraGroups = [ "beancount" ];
+    };
   };
+
+  users.groups.beancount = { };
+  systemd.tmpfiles.rules = [ "d ${beancountDir} 0770 root beancount -" ];
 
   security.sudo.wheelNeedsPassword = false;
 
@@ -66,6 +84,29 @@
 
   services.qemuGuest.enable = true; # clean ACPI shutdown from the Hetzner console
   services.fstrim.enable = true; # weekly SSD trim
+
+  services.bean-dashboard = {
+    enable = true;
+    package = inputs.bean-dashboard.packages.x86_64-linux.bean-dashboard;
+    ledgerPath = ledgerMain;
+    ledgerGroup = "beancount";
+    # tailscale serve forwards the tailnet DNS name as the Host header
+    allowedHosts = [ "midori.taila81c13.ts.net" ];
+  };
+
+  systemd.services.fava = {
+    description = "fava beancount web UI";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${fava-run}";
+      DynamicUser = true;
+      SupplementaryGroups = [ "beancount" ];
+      Restart = "on-failure";
+    };
+  };
+
   zramSwap.enable = true; # no disk swap; prevents OOM kills
 
   nix.settings.auto-optimise-store = true;
