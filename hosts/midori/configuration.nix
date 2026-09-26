@@ -90,8 +90,13 @@ in
     package = inputs.bean-dashboard.packages.x86_64-linux.bean-dashboard;
     ledgerPath = ledgerMain;
     ledgerGroup = "beancount";
-    # tailscale serve forwards the tailnet DNS name as the Host header
-    allowedHosts = [ "midori.taila81c13.ts.net" ];
+    # tailscale serve forwards the tailnet DNS name as the Host
+    # header; localhost entries keep on-box curl debugging working
+    allowedHosts = [
+      "midori.taila81c13.ts.net"
+      "localhost"
+      "127.0.0.1"
+    ];
   };
 
   systemd.services.fava = {
