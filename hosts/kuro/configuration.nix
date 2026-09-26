@@ -86,6 +86,7 @@
       paths = [
         "/home/herwig/Archive"
         "/home/herwig/Git"
+        "/home/herwig/Ledger"
         "/home/herwig/Org"
         "/home/herwig/Resources"
         "/home/herwig/.config/calibre"
@@ -124,7 +125,7 @@
   };
 
   environment.variables = {
-    BEANCOUNT_FILE = "/home/herwig/Org/19990206T030000==1--ledger.beancount";
+    BEANCOUNT_FILE = "/home/herwig/Ledger/19990206T030000==1--ledger.beancount";
     EDITOR = "emacsclient -nw";
     HISTFILE = "$XDG_STATE_HOME/bash/history";
     NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
