@@ -1,7 +1,9 @@
 [user]
     name = {{ .git.name | quote }}
     email = {{ .git.email | quote }}
+{{- if (dig "sign" true .git) }}
     signingkey = {{ .git.signingkey | quote }}
+{{- end }}
 
 [init]
     defaultBranch = master
@@ -60,11 +62,14 @@
     autoStash = true
     upateRefs = true
 
+{{- if (dig "sign" true .git) }}
+
 [gpg]
     format = ssh
 
 [commit]
     gpgsign = true
+{{- end }}
 
 [filter "lfs"]
     smudge = git-lfs smudge -- %f

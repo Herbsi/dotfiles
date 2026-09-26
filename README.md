@@ -89,3 +89,11 @@ $ sudo git -C /etc/nixos pull
 $ sudo nixos-rebuild switch --flake /etc/nixos#midori
 ```
 
+chezmoi on the server reads the same clone. Create
+`~/.config/chezmoi/chezmoi.toml` with `sourceDir = "/etc/nixos"` and
+`git.sign = false` (no 1Password on the server, so no commit signing),
+then apply:
+```
+$ chezmoi apply
+```
+

@@ -1,3 +1,5 @@
 {{- template "git/config.tmpl" .}}
+{{ if (dig "sign" true .git) -}}
 [gpg "ssh"]
   program = {{ .git.gpg.ssh.program }}
+{{- end }}
