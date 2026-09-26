@@ -21,7 +21,12 @@
   systemd.network = {
     enable = true;
     networks."10-wan" = {
-      matchConfig.Driver = "virtio_net";
+      # Match by name. A Driver match can lose a race at boot: udev
+      # fills ID_NET_DRIVER late, and useDHCP = false leaves no
+      # fallback, so the interface ends up unconfigured. udev always
+      # renames the virtio NIC to enp1s0, and that event triggers
+      # configuration — a Name match always applies.
+      matchConfig.Name = "enp1s0";
       networkConfig.DHCP = "yes";
     };
   };
