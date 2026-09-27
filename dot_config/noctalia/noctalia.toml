@@ -1,0 +1,6 @@
+[shell]
+# Act as the polkit authentication agent for privileged prompts.
+polkit_agent = true
+
+[theme]
+mode = "dark"

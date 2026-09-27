@@ -9,6 +9,7 @@
   imports = [
     ../../default.nix
     ./hardware-configuration.nix
+    ./desktop.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -17,16 +18,12 @@
   networking.hostName = "kuro";
   networking.networkmanager.enable = true;
 
-  services.xserver.enable = true;
   services.xserver.xkb = {
     layout = "us";
     variant = "mac";
     options = "ctrl:nocaps";
   };
   console.useXkbConfig = true;
-
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   services.pipewire = {
     enable = true;
