@@ -1,5 +1,6 @@
 {
   config,
+  bean-dashboard,
   inputs,
   lib,
   pkgs,
@@ -20,7 +21,7 @@ in
   imports = [
     ../../default.nix
     ./hardware-configuration.nix
-    inputs.bean-dashboard.nixosModules.default
+    bean-dashboard.nixosModules.default
   ];
 
   networking.hostName = "midori";
@@ -87,7 +88,7 @@ in
 
   services.bean-dashboard = {
     enable = true;
-    package = inputs.bean-dashboard.packages.x86_64-linux.bean-dashboard;
+    package = bean-dashboard.packages.x86_64-linux.bean-dashboard;
     ledgerPath = ledgerMain;
     ledgerGroup = "beancount";
     # tailscale serve forwards the tailnet DNS name as the Host
