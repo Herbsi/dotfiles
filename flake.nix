@@ -2,9 +2,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
-    # Bare repo on midori, pushed from kuro: exists just there,
-    # so evaluating nixosConfigurations.midori on other machines fails
-    bean-dashboard.url = "git+file:///srv/bean-dashboard?ref=master";
+    # Bare repo at the same path on both hosts: midori deploys from
+    # its copy, kuro's mirror lets flake updates fetch it locally.
+    # Push to both bares before bumping the bean-dashboard pin.
+    bean-dashboard.url = "git+file:///srv/bean-dashboard.git?ref=master";
   };
   outputs =
     inputs@{
@@ -25,6 +26,7 @@
       nixosConfigurations.midori = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
+          bean-dashboard = inputs.bean-dashboard;
         };
         modules = [
           ./hosts/midori/configuration.nix
