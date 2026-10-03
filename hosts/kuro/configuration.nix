@@ -49,6 +49,7 @@
     imagemagick
     librewolf
     lua-language-server
+    kdePackages.dolphin
     kdePackages.okular
     pi-coding-agent
     restic
