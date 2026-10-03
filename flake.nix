@@ -2,9 +2,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
-    # Bare repo on midori, pushed from kuro: exists only there.
-    # Inputs fetch lazily, so kuro evaluates fine, but the midori
-    # configuration only builds on midori
+    # Bare repo at the same path on both hosts: midori deploys from
+    # its copy, kuro's mirror lets flake updates fetch it locally.
+    # Push to both bares before bumping the bean-dashboard pin.
     bean-dashboard.url = "git+file:///srv/bean-dashboard.git?ref=master";
   };
   outputs =
