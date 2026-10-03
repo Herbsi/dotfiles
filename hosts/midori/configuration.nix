@@ -16,6 +16,35 @@ let
   fava-run = pkgs.writeShellScript "fava-run" ''
     exec ${lib.getExe pkgs.fava} --host 127.0.0.1 --port ${toString favaPort} ${beancountDir}/*.beancount
   '';
+
+  # Books live on the server: calibre-opds serves them over the
+  # tailnet and the public Funnel endpoint, herwig (group member)
+  # rsyncs them in
+  bookDir = "/var/lib/calibre-library";
+  opdsPort = 8183;
+  # Funnel only offers 443/8443/10000; the first two already serve
+  # the dashboard and fava inside the tailnet
+  funnelPort = 10000;
+
+  calibre-opds-run = pkgs.writeShellScript "calibre-opds-run" ''
+    calibre=${lib.getExe' pkgs.calibre "calibre-server"}
+    userdb=/var/lib/calibre-opds/users.sqlite
+
+    # Provision the read-only kobo account once
+    if ! $calibre --userdb "$userdb" --manage-users -- list | grep -qx kobo; then
+      # strip the newline: calibre stores stdin verbatim
+      printf '%s' "$(< /run/agenix/calibre-kobo-pass)" | $calibre --userdb "$userdb" --manage-users -- add kobo --readonly
+    fi
+
+    exec $calibre --listen-on=127.0.0.1 --port ${toString opdsPort} \
+      --enable-auth --auth-mode basic --userdb "$userdb" ${bookDir}
+  '';
+
+  # tailscale funnel is idempotent, re-running re-applies the mount
+  calibre-funnel-run = pkgs.writeShellScript "calibre-funnel-run" ''
+    tailscale=${lib.getExe config.services.tailscale.package}
+    exec $tailscale funnel --bg --https=${toString funnelPort} --yes 127.0.0.1:${toString opdsPort}
+  '';
 in
 {
   imports = [
@@ -52,6 +81,13 @@ in
     mode = "0440";
   };
 
+  age.secrets.calibre-kobo-pass = {
+    file = ../../secrets/calibre-kobo-pass.age;
+    # the DynamicUser serving the books is a member
+    group = "calibre";
+    mode = "0440";
+  };
+
   networking.firewall = {
     enable = true;
     allowPing = true;
@@ -65,12 +101,16 @@ in
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILv7Pl+daulldPY7Ldss+dlN33J7I/YXzccvzfCr4e7n"
       ];
-      extraGroups = [ "beancount" ];
+      extraGroups = [ "beancount" "calibre" ];
     };
   };
 
   users.groups.beancount = { };
-  systemd.tmpfiles.rules = [ "d ${beancountDir} 0770 root beancount -" ];
+  users.groups.calibre = { };
+  systemd.tmpfiles.rules = [
+    "d ${beancountDir} 0770 root beancount -"
+    "d ${bookDir} 0770 root calibre -"
+  ];
 
   security.sudo.wheelNeedsPassword = false;
 
@@ -110,6 +150,46 @@ in
       DynamicUser = true;
       SupplementaryGroups = [ "beancount" ];
       Restart = "on-failure";
+    };
+  };
+
+  systemd.services.calibre-opds = {
+    description = "calibre content server (OPDS backend for the Kobo)";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${calibre-opds-run}";
+      # Downloads stage in TMPDIR and stay there as a reuse cache.
+      # DynamicUser mounts a private tmpfs there sized 10% of RAM
+      # (382M), smaller than the largest epub in the library —
+      # stage on disk instead or downloads fail with 500s.
+      Environment = [
+        "CALIBRE_CONFIG_DIRECTORY=/var/lib/calibre-opds"
+        "TMPDIR=/var/lib/calibre-opds"
+      ];
+      # DynamicUser implies ProtectSystem=strict; the library needs
+      # write access for calibre's db journals and test files
+      ReadWritePaths = [ bookDir ];
+      DynamicUser = true;
+      StateDirectory = "calibre-opds";
+      SupplementaryGroups = [ "calibre" ];
+      Restart = "on-failure";
+    };
+  };
+
+  systemd.services.calibre-funnel = {
+    description = "publish the OPDS server on the public Funnel endpoint";
+    after = [
+      "network-online.target"
+      "calibre-opds.service"
+    ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${calibre-funnel-run}";
     };
   };
 
