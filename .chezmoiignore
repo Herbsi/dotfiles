@@ -5,6 +5,7 @@ stylua.toml
 **/*.nix
 flake.lock
 secrets/
+hosts/
 
 PERSONALXLSB
 install-winget.ps1
