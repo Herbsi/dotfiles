@@ -4,8 +4,8 @@ Brewfile
 stylua.toml
 **/*.nix
 flake.lock
-secrets/
 hosts/
+secrets/
 
 PERSONALXLSB
 install-winget.ps1
@@ -14,6 +14,13 @@ install-winget.ps1
 ## Only on macOS
 .config/com.googlecode.iterm2.plist
 .R
+{{ end }}
+
+{{ if ne .chezmoi.hostname "kuro" }}
+## Only on kuro
+.config/calibre
+.config/niri
+.config/noctalia
 {{ end }}
 
 {{ if eq .chezmoi.hostname "SLCH-GM0G33YJ" }}
