@@ -160,7 +160,14 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${calibre-opds-run}";
-      Environment = [ "CALIBRE_CONFIG_DIRECTORY=/var/lib/calibre-opds" ];
+      # Downloads stage in TMPDIR and stay there as a reuse cache.
+      # DynamicUser mounts a private tmpfs there sized 10% of RAM
+      # (382M), smaller than the largest epub in the library —
+      # stage on disk instead or downloads fail with 500s.
+      Environment = [
+        "CALIBRE_CONFIG_DIRECTORY=/var/lib/calibre-opds"
+        "TMPDIR=/var/lib/calibre-opds"
+      ];
       # DynamicUser implies ProtectSystem=strict; the library needs
       # write access for calibre's db journals and test files
       ReadWritePaths = [ bookDir ];
