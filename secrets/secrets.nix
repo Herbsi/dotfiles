@@ -3,5 +3,6 @@ let
 in {
   "restic-env.age".publicKeys = [ key ];
   "midori-wan.age".publicKeys = [ key ];
+  "calibre-kobo-pass.age".publicKeys = [ key ];
 }
 
