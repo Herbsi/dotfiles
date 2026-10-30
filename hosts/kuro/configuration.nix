@@ -79,7 +79,7 @@
 
   services.restic.backups = {
     HOME = {
-      repository = "s3:s3.us-west-001.backblazeb2.com/kuro-restic";
+      repository = "s3:nbg1.your-objectstorage.com/kuro-restic-backup";
       environmentFile = config.age.secrets.restic-env.path;
       paths = [
         "/home/herwig/Archive"
