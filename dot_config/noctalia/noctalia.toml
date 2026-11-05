@@ -1,0 +1,13 @@
+[shell]
+# Act as the polkit authentication agent for privileged prompts.
+polkit_agent = true
+
+[theme]
+mode = "dark"
+source = "community"
+community_palette = "Catppuccin Frappe Mauve"
+
+# Render the palette into niri; wired up via the include in niri/config.kdl.
+[theme.templates]
+enable_builtin_templates = true
+builtin_ids = ["niri"]

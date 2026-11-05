@@ -1,0 +1,99 @@
+# -*- mode: fish -*-
+### Setup $PATH
+## The value gets *prepended* to $fish_user_paths.
+{{- if eq .chezmoi.os "darwin" }}
+## macOS
+fish_add_path --global /usr/local/bin
+fish_add_path --global /opt/local/bin
+fish_add_path --global /Applications/MacPorts/Emacs.app/Contents/MacOS
+fish_add_path --global $HOME/.config/emacs/bin
+fish_add_path --global $HOME/.local/bin
+{{- end }}
+{{- if eq .chezmoi.hostname "kuro" }}
+fish_add_path --global $HOME.config/emacs/bin
+{{- end }}
+
+### aliases
+alias R='R --silent --no-save'
+alias clr="clear"
+alias cp="cp -i"
+alias e="emacsclient --create-frame"
+alias eza="eza --group-directories-first --git";
+alias l="eza -1";
+alias la="LC_COLLATE=C eza -la";
+alias ll="eza -lg";
+alias mkdir="mkdir -pv"
+alias mv="mv -i"
+alias rm="rm -i"
+alias wget='wget -c'
+
+### Direnv
+if command -v direnv > /dev/null;
+    direnv hook fish | source
+end
+
+
+### Starship
+if command -v starship > /dev/null;
+    starship init fish | source
+end
+
+
+### uv
+if command -v uv > /dev/null;
+    uv generate-shell-completion fish | source
+    uvx --generate-shell-completion fish | source
+end
+
+
+### Zoxide
+if command -v zoxide > /dev/null;
+    zoxide init fish | source
+end
+
+
+### fzf configuration
+set fzf_fd_opts --hidden \
+    --exclude=.DS_Store \
+    --exclude=.git \
+    --exclude=.Trash \
+    --exclude='*cache*' \
+    --exclude=py_cache \
+    --exclude='.cpan*' \
+    --exclude=Music/Music \
+    --exclude=Library \
+    --exclude=.local/share \
+    --exclude=pip \
+    --exclude=site-packages
+
+set fzf_preview_dir_cmd eza --all --color=always
+fzf_configure_bindings --directory=\ct --history=
+{{- if eq .chezmoi.os "darwin" }}
+source /opt/local/share/fzf/shell/key-bindings.fish
+{{- end }}
+
+
+### atuin
+if command -v atuin > /dev/null;
+    set -gx ATUIN_NOBIND "true"
+    atuin init fish | source
+
+    # bind to ctrl-r in normal and insert mode, add any other bindings you want here too
+    bind \cr _atuin_search
+    bind -M insert \cr _atuin_search
+end
+
+
+{{- if eq .chezmoi.os "darwin" }}
+### iTerm2 integration
+source $XDG_CONFIG_HOME/fish/iterm2_shell_integration.fish
+{{- end }}
+
+### ssh-agent
+{{- if eq .chezmoi.os "darwin" }}
+set -gx SSH_AUTH_SOCK $HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+{{- end }}
+{{- if eq .chezmoi.hostname "Kuro" }}
+set -gx SSH_AUTH_SOCK $HOME/.1password/agent.sock
+{{- end }}
+

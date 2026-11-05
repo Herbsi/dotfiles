@@ -1,0 +1,125 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = [
+#   "click",
+#   "polars",
+# ]
+# ///
+import datetime
+import subprocess
+import tempfile
+from pathlib import Path
+
+import click
+import polars as pl
+
+
+@click.command()
+@click.argument("filename", type=click.Path(exists=True, path_type=Path))
+@click.option(
+    "--from",
+    "start_date",
+    type=click.DateTime(),
+    default=(datetime.date.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d"),
+)
+@click.option(
+    "--to",
+    "end_date",
+    type=click.DateTime(),
+    default=datetime.date.today().strftime("%Y-%m-%d"),
+)
+def main(filename, start_date, end_date):
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_dir = Path(tmp_dir)
+        output_file = tmp_dir / "transactions.csv"
+        query = r'SELECT date, account, CONVERT(position, "CHF") AS position WHERE (NOT account ~ "Vacation");'
+        command = [
+            "bean-query",
+            "--format",
+            "csv",
+            "--output",
+            output_file,
+            filename,
+            query,
+        ]
+        try:
+            subprocess.run(command, capture_output=True, text=True, check=True)
+        except FileNotFoundError:
+            click.echo(f"Error: Command '{command[0]}' not found.", err=True)
+        except subprocess.CalledProcessError as e:
+            click.echo(f"Error executing command: {e}", err=True)
+            click.echo(f"STDOUT: {e.stdout}", err=True)
+            click.echo(f"STDERR: {e.stderr}", err=True)
+
+        df = (
+            # Read in CSV and convert columns
+            pl.read_csv(output_file)
+            .with_columns(
+                [
+                    pl.col("date")
+                    .str.strptime(pl.Date, "%Y-%m-%d", strict=False)
+                    .alias("date"),
+                    pl.col("account"),
+                    pl.col("position")
+                    .str.strip_chars_start(" ")
+                    .str.head(n=-4)
+                    .cast(pl.Float64, strict=False)
+                    .alias("position"),
+                ]
+            )
+            .filter(pl.col("date").is_between(start_date, end_date, closed="right"))
+        )
+
+        income = df.filter(
+            (
+                (pl.col("account").str.contains("^Income"))
+                & ~(pl.col("account").str.contains("BVG"))
+            )
+            | pl.col("account").str.contains("CH:Sozialabzuge")
+        ).with_columns(pl.lit("Income").alias("account"))
+
+        expenses = df.filter(
+            pl.col("account").str.contains("^Expenses")
+            & ~(pl.col("account").str.contains("CH:Sozialabzuge"))
+        ).with_columns(pl.lit("Expenses").alias("account"))
+
+        df = (
+            income.vstack(expenses)
+            .with_columns(pl.lit("summary").alias("summary"))
+            .group_by("summary", "account")
+            .agg(pl.col("position").sum().alias("position"))
+            .pivot(
+                index="summary",
+                on="account",
+                values="position",
+            )
+            .drop("summary")
+            .with_columns(
+                [
+                    (-pl.col("Income") - pl.col("Expenses")).alias("Saved"),
+                    (
+                        (-pl.col("Income") - pl.col("Expenses")) / -pl.col("Income")
+                    ).alias("Savings Rate"),
+                ]
+            )
+        )
+
+    width = 8
+    click.echo(
+        f"Monthly averages in ({start_date.strftime('%Y-%m-%d')}, {end_date.strftime('%Y-%m-%d')}]:"
+    )
+    months = (
+        (end_date - start_date).days / 365.25 * 12
+    )  # Every month has 365.25 / 12 days
+    click.echo(
+        f"Income:       {abs(df[0, 'Income']) / months:>{width}.2f} CHF per month"
+    )
+    click.echo(
+        f"Expenses:     {abs(df[0, 'Expenses']) / months:>{width}.2f} CHF per month"
+    )
+    click.echo(f"Saved:        {df[0, 'Saved'] / months:>{width}.2f} CHF per month")
+    click.echo(f"Savings Rate: {df[0, 'Savings Rate'] * 100:>{width}.2f} %")
+
+
+if __name__ == "__main__":
+    main()

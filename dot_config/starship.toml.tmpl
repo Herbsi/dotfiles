@@ -1,0 +1,30 @@
+[battery]
+full_symbol = "full "
+charging_symbol = "charging "
+discharging_symbol = "discharging "
+unknown_symbol = "unknown "
+empty_symbol = "empty "
+
+[erlang]
+symbol = "erl "
+
+[nodejs]
+symbol = "nodejs "
+
+[pulumi]
+symbol = "pulumi "
+
+[typst]
+symbol = "typst "
+
+{{- if ne .chezmoi.os "windows" }}
+[jj_bookmark]
+symbol = "jj "
+truncation_symbol = "..."
+
+[jj_status]
+description_empty = "e"
+immutable = "i"
+deleted = "x"
+renamed = "r"
+{{- end }}

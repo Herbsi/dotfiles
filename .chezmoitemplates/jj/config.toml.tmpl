@@ -1,0 +1,37 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = {{ .git.name | quote }}
+email = {{ .git.email | quote }}
+
+[signing]
+behavior = "drop"
+backend = "ssh"
+key = {{ .git.signingkey | quote }}
+
+[git]
+sign-on-push = true
+# Prevent pushing work in progress or anything explicitly labeled "private"
+private-commits = "description('wip:*') | description('private:*')"
+
+[working-copy]
+eol-conversion = "input"
+
+[ui]
+default-command = "log"
+graph.style = "ascii"
+
+# Source: https://isaaccorbrey.com/notes/jujutsu-megamerges-for-fun-and-profit
+[revset-aliases]
+"closest_merge(to)" = "heads(::to & merges())"
+
+[aliases]
+# `jj stack <revset>` to include specific revs
+stack = ["rebase", "--after", "trunk()", "--before", "closest_merge(@)", "--revision"]
+
+# `jj stage` to include the whole stack after the megamerge
+stage = ["stack", "closest_merge(@)+:: ~ empty()"]
+
+# `jj restack` to rebase your changes onto `trunk()`
+restack = ["rebase", "--onto", "trunk()", "--source", "roots(trunk()..) & mutable()", "--simplify-parents"]
+

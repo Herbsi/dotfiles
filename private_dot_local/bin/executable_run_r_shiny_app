@@ -1,0 +1,13 @@
+#!/usr/bin/env fish
+
+if test (count $argv) -eq 0
+    echo "Usage: $0 /path/to/app.R"
+    exit 1
+end
+
+pushd (path dirname $argv[1])
+set appdir (path basename $argv[1])
+
+Rscript -e "shiny::runApp(\"$appdir\", launch.browser = TRUE)"
+
+popd

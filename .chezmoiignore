@@ -1,0 +1,44 @@
+LICENSE
+README.md
+stylua.toml
+**/*.nix
+flake.lock
+hosts/
+secrets/
+
+PERSONALXLSB
+install-winget.ps1
+
+{{ if ne .chezmoi.os "darwin" }}
+## Only on macOS
+.R
+{{ end }}
+
+{{ if ne .chezmoi.hostname "kuro" }}
+## Only on kuro
+.config/calibre
+.config/niri
+.config/noctalia
+{{ end }}
+
+{{ if ne .chezmoi.os "windows" }}
+## Only on Windows
+.gitconfig
+.gitignore
+set-path.ps1
+AppData
+Documents
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+## Ignore on Windows
+.config/enchant
+.local
+.sbclrc
+.config/*
+install-fisher.fish
+## Except for these
+!.config/atuin
+!.config/wezterm
+!.config/starship.toml
+{{ end }}
