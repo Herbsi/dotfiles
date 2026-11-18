@@ -1,3 +1,46 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$nats\
+$directory\
+$vcs\
+$docker_context\
+$package\
+$dotnet\
+$golang\
+$julia\
+$lua\
+$nodejs\
+$python\
+$rlang\
+$rust\
+$typst\
+$nix_shell\
+$memory_usage\
+$direnv\
+$custom\
+$sudo\
+$cmd_duration\
+$line_break\
+$jobs\
+$battery\
+$time\
+$status\
+$container\
+$netns\
+$os\
+$shell\
+$character"""
+
+command_timeout = 1000
+
+[azure]
+symbol = "☁️ "
+
 [battery]
 full_symbol = "full "
 charging_symbol = "charging "
@@ -5,26 +48,24 @@ discharging_symbol = "discharging "
 unknown_symbol = "unknown "
 empty_symbol = "empty "
 
-[erlang]
-symbol = "erl "
-
-[nodejs]
-symbol = "nodejs "
-
-[pulumi]
-symbol = "pulumi "
-
-[typst]
-symbol = "typst "
-
-{{- if ne .chezmoi.os "windows" }}
 [jj_bookmark]
 symbol = "jj "
 truncation_symbol = "..."
+
+[jj_change]
+disabled = false
 
 [jj_status]
 description_empty = "e"
 immutable = "i"
 deleted = "x"
 renamed = "r"
-{{- end }}
+
+[nodejs]
+symbol = "nodejs "
+
+[typst]
+symbol = "typst "
+
+[vcs]
+order = ["jj", "git"]
