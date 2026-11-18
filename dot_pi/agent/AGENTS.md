@@ -74,7 +74,7 @@
 # Toolchain Commands
 
 - C#: use `dotnet build`, `dotnet test`, `dotnet run`.
-- Python: use `pytest` for testing, `ruff` for linting and formatting, `uv` for dependency management.
+- Python: use `pytest` for testing, `ruff` for linting and formatting, `uv` for dependency management and `pyrefly` as the LSP server
 - Rust: use `cargo check`, `cargo test`, `cargo clippy`.
 
 # Execution Rules
